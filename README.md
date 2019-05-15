@@ -9,10 +9,9 @@
   * [1. Set up environment](#1-set-up-environment)
     + [With `virtualenv` and `pip`](#with-virtualenv-and-pip)
     + [With `conda`](#with-conda)
-  * [2. Configure Flask app](#2-configure-flask-app)
+  * [2. Collect the data from S3](#2-collect-data)
   * [3. Initialize the database](#3-initialize-the-database)
-  * [4. Run the application](#4-run-the-application)
-- [Testing](#testing)
+  
 
 <!-- tocstop -->
 
@@ -95,51 +94,12 @@ Business value: Users can find where a beer is that has been recommended. 8 poin
 
 ```
 ├── README.md                         <- You are here
-│
-├── app
-│   ├── static/                       <- CSS, JS files that remain static 
-│   ├── templates/                    <- HTML (or other code) that is templated and changes based on a set of inputs
-│   ├── models.py                     <- Creates the data model for the database connected to the Flask app 
-│   ├── __init__.py                   <- Initializes the Flask app and database connection
-│
-├── config                            <- Directory for yaml configuration files for model training, scoring, etc
-│   ├── logging/                      <- Configuration files for python loggers
-│
-├── data                              <- Folder that contains data used or generated. Only the external/ and sample/ subdirectories are tracked by git. 
-│   ├── archive/                      <- Place to put archive data is no longer usabled. Not synced with git. 
-│   ├── external/                     <- External data sources, will be synced with git
-│   ├── sample/                       <- Sample data used for code development and testing, will be synced with git
-│
-├── docs                              <- A default Sphinx project; see sphinx-doc.org for details.
-│
-├── figures                           <- Generated graphics and figures to be used in reporting.
-│
+├── data                              <- Folder that contains data used or generated. 
 ├── models                            <- Trained model objects (TMOs), model predictions, and/or model summaries
-│   ├── archive                       <- No longer current models. This directory is included in the .gitignore and is not tracked by git
-│
-├── notebooks
-│   ├── develop                       <- Current notebooks being used in development.
-│   ├── deliver                       <- Notebooks shared with others. 
-│   ├── archive                       <- Develop notebooks no longer being used.
-│   ├── template.ipynb                <- Template notebook for analysis with useful imports and helper functions. 
-│
 ├── src                               <- Source data for the project 
-│   ├── archive/                      <- No longer current scripts.
-│   ├── helpers/                      <- Helper scripts used in main src files 
-│   ├── sql/                          <- SQL source code
-│   ├── add_songs.py                  <- Script for creating a (temporary) MySQL database and adding songs to it 
-│   ├── ingest_data.py                <- Script for ingesting data from different sources 
-│   ├── generate_features.py          <- Script for cleaning and transforming data and generating features used for use in training and scoring.
-│   ├── train_model.py                <- Script for training machine learning model(s)
-│   ├── score_model.py                <- Script for scoring new predictions using a trained model.
-│   ├── postprocess.py                <- Script for postprocessing predictions and model results
-│   ├── evaluate_model.py             <- Script for evaluating model performance 
-│
-├── test                              <- Files necessary for running model tests (see documentation below) 
-
-├── run.py                            <- Simplifies the execution of one or more of the src scripts 
-├── app.py                            <- Flask wrapper for running the model 
-├── config.py                         <- Configuration file for Flask app
+│   ├── config.py                     <- Configuration file for SQLite, RDS, and S3 parameters
+│   ├── createdb.py                   <- Script for creating db in RDS or Sqlite and adding rows
+│   ├── getdata_s3.py                 <- Script for getting source data from my S3 bucket and landing it in your S3 bucket
 ├── requirements.txt                  <- Python package dependencies 
 ```
 This project structure was partially influenced by the [Cookiecutter Data Science project](https://drivendata.github.io/cookiecutter-data-science/).
@@ -159,9 +119,9 @@ The `requirements.txt` file contains the packages required to run the model code
 ```bash
 pip install virtualenv
 
-virtualenv pennylane
+virtualenv beerapp
 
-source pennylane/bin/activate
+source beerapp/bin/activate
 
 pip install -r requirements.txt
 
@@ -169,49 +129,41 @@ pip install -r requirements.txt
 #### With `conda`
 
 ```bash
-conda create -n pennylane python=3.7
-conda activate pennylane
+conda create -n beerapp python=3.7
+conda activate beerapp
 pip install -r requirements.txt
 
 ```
 
-### 2. Configure Flask app 
+### 2. Collect the data from S3
 
-`config.py` holds the configurations for the Flask app. It includes the following configurations:
+`config.py` holds the configurations for S3. It includes the following configurations:
 
 ```python
-DEBUG = True  # Keep True for debugging, change to False when moving to production 
-LOGGING_CONFIG = "config/logging/local.conf"  # Path to file that configures Python logger
-PORT = 3002  # What port to expose app on 
-SQLALCHEMY_DATABASE_URI = 'sqlite:////tmp/tracks.db'  # URI for database that contains tracks
-
+AWS_KEY_ID=""
+AWS_ACCESS_KEY=""
+AWS_BUCKET=""
+AWS_FILE_PATH=""
 ```
+You must change them to reflect your own S3 credentials.
 
+Then run  `python src/getdata_s3.py`
 
-### 3. Initialize the database 
+### 3. Initialize the database in RDS or SQLite
 
-To create the database in the location configured in `config.py` with one initial song, run: 
+`config.py` holds the configurations for RDS and SQlite. It includes the following configurations:
 
-`python run.py create --artist=<ARTIST> --title=<TITLE> --album=<ALBUM>`
+```python
+#RDS
+MYSQL_USER=""
+MYSQL_PASSWORD=""
+MYSQL_HOST=""
+MYSQL_PORT=""
+MYSQL_DB = ""
+MYSQL_SQLTYPE=""
+#SQLITE
+SQLITELOCALENGINE = ""
+```
+You must change them to reflect your RDS and/or local SQLite credentials.
 
-To add additional songs:
-
-`python run.py ingest --artist=<ARTIST> --title=<TITLE> --album=<ALBUM>`
-
-
-### 4. Run the application 
- 
- ```bash
- python app.py 
- ```
-
-### 5. Interact with the application 
-
-Go to [http://127.0.0.1:3000/]( http://127.0.0.1:3000/) to interact with the current version of hte app. 
-
-## Testing 
-
-Run `pytest` from the command line in the main project repository. 
-
-
-Tests exist in `test/test_helpers.py`
+Then run `python src/createdb.py --rds` for creating the db in RDS or run `python src/createdb.py` to create it in SQLite
