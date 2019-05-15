@@ -9,10 +9,9 @@
   * [1. Set up environment](#1-set-up-environment)
     + [With `virtualenv` and `pip`](#with-virtualenv-and-pip)
     + [With `conda`](#with-conda)
-  * [2. Configure Flask app](#2-configure-flask-app)
+  * [2. Collect the data from S3](#2-collect-data)
   * [3. Initialize the database](#3-initialize-the-database)
-  * [4. Run the application](#4-run-the-application)
-- [Testing](#testing)
+  
 
 <!-- tocstop -->
 
