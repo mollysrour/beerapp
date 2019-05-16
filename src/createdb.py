@@ -5,7 +5,7 @@ import sqlalchemy as sql
 import logging
 import pandas as pd
 import config
-
+import argparse
 Base = declarative_base()  
 
 class Beer(Base):
@@ -29,7 +29,7 @@ def create_db(rds=False):
 	Keyword Arguments:
 		rds {bool} -- If true, creates databased in RDS. If false, creates locally in sqlite (default: {False})
 	"""
-	if rds = True:
+	if rds == True:
 		engine_string = "{}://{}:{}@{}:{}/msia423".\
 	format(config.MYSQL_SQLTYPE, config.MYSQL_USER, config.MYSQL_PASSWORD, config.MYSQL_HOST, config.MYSQL_PORT)
 	else:
