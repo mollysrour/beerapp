@@ -166,4 +166,6 @@ SQLITELOCALENGINE = ""
 ```
 You must change them to reflect your RDS and/or local SQLite credentials.
 Note: the SQLITELOCALENGINE must begin with sqlite:/// before the filepath.
+=======
+
 Then run `python src/createdb.py --rds` for creating the db in RDS or run `python src/createdb.py` to create it in SQLite
