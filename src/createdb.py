@@ -36,6 +36,9 @@ def create_db(rds=False):
 		engine_string = config.SQLITELOCALENGINE
 	engine = sql.create_engine(engine_string)
 	Base.metadata.create_all(engine)
+
+def persist_data():
+	engine = sql.create_engine(config.SQLITELOCALENGINE)
 	logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
 	logger = logging.getLogger(__file__)
 	# create a db session
@@ -47,7 +50,7 @@ def create_db(rds=False):
 	session.commit()   
 	logger.info("Database created with beer added: Black Horse Black Beer")
 	session.close()
-	
+
 if __name__ == "__main__":
 
 	parser = argparse.ArgumentParser(description="Create and/or add data to database")
