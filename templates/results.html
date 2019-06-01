@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8"">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <meta charset="UTF-8">
+    <link href="static/basic.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="icon" href="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/apple/198/clinking-beer-mugs_1f37b.png">
+</head>
+<body>
+<div id="container" align="center">
+  <div class="main">
+    <br>
+    <br>
+    <gulpheading>🍺Gulp!🍺</mainheading>
+    <br>
+    <br>
+    <mainheading>The Beer Recommendation App</mainheading>
+    <br>
+    <br>
+    <typeheading>Your beer recommendations for your chosen type: {{beertype}}.</mainheading>
+    <br>
+    <br>
+    <hr style="width:40%">
+    <table>
+        <thead font-size=20px;>
+           <tr>
+              <th>Rank</th>
+              <th>Beer Name</th>
+              <th>ABV</th>
+              <th>Style</th>
+              <th>Brewery</th>
+              <br>
+           </tr>
+        </thead>
+
+        <tbody>
+           {% for beer in preds %}
+              <tr>
+                  <td>{{beer.Pkey % 10}}</td>
+                  <td>{{ beer.Beer_Name }}</td>
+                  <td>{{ beer.ABV }}</td>
+                  <td>{{ beer.Style }}</td>
+                  <td>{{ beer.Brewery }}</td>
+              </tr>
+           {% endfor %}
+        </tbody>
+     </table>
+
+    </div>
+</div>
+</body>
+</html>
