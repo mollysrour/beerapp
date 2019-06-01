@@ -1,0 +1,140 @@
+acquire_data:
+  sourcetoS3:
+    AWS_KEY_ID: 'AKIAIHUMXPGAWWGO7DYQ'
+    AWS_ACCESS_KEY: 'kABCROQh5Qop/6lgdVIxDm8pIjbfKSYxPc1JgRFt' 
+    AWS_BUCKET: 'testbucket-mollysrour'
+    AWS_FILE_PATH: 'beer_reviews.csv'
+  
+  S3tolocal:
+    AWS_KEY_ID: 'AKIAIHUMXPGAWWGO7DYQ'
+    AWS_ACCESS_KEY: 'kABCROQh5Qop/6lgdVIxDm8pIjbfKSYxPc1JgRFt' 
+    AWS_BUCKET: 'testbucket-mollysrour'
+    AWS_FILE_PATH: 'beer_reviews.csv'
+    localfilepath: '../data/beer_reviews.csv'
+  
+clean_data:
+
+  create_mean_column:
+    columns: ['review_overall', 'review_palate', 'review_aroma', 'review_taste', 'review_appearance']
+    name: 'mean_review'
+
+  omit_values:
+    column: 'beer_style'
+    valuelist:  ['Black & Tan', 'Chile Beer', 'Sahti', 'Fruit / Vegetable Beer', 
+                 'Herbed / Spiced Beer', 'Happoshu', 'Low Alcohol Beer', 'Pumpkin Ale', 
+                 'Kvass', 'Rye Beer', 'Smoked Beer', 'Scottish Gruit / Ancient Herbed Ale', 
+                 'Braggot', 'Bière de Champagne / Bière Brut', 'Cream Ale', 'California Common / Steam Beer', 'Japanese Rice Lager']
+
+  aggregated_category_column:
+    narrowcolumn: 'beer_style'
+    valuedict:
+      'Stout': ['Foreign / Export Stout', 'Oatmeal Stout', 'American Stout', 'Russian Imperial Stout', 
+'American Double / Imperial Stout', 'Irish Dry Stout', 'Milk / Sweet Stout', 'English Stout'] 
+      'Porter': ['American Porter', 'English Porter', 'Baltic Porter']
+      'IPA': ['American Double / Imperial IPA', 'American IPA', 'English India Pale Ale (IPA)', 'Belgian IPA', 
+            'American Black Ale', 'Belgian Dark Ale', 'Dubbel', 'Roggenbier', 'Scottish Ale', 'Winter Warmer']
+      'Wheat Ale': ['Hefeweizen', 'Dunkelweizen', 'Kristalweizen', 'Berliner Weissbier',
+                 'American Pale Wheat Ale', 'American Dark Wheat Ale', 'Witbier']
+      'Pale Ale': ['American Amber / Red Ale', 'American Blonde Ale', 'American Pale Ale (APA)', 'Belgian Pale Ale',  
+                'Extra Special / Strong Bitter (ESB)', 'English Pale Ale', 'English Pale Mild Ale', 'Bière de Garde', 
+                'Kölsch', 'Irish Red Ale', 'Saison / Farmhouse Ale', 'English Bitter']
+      'Sour': ['American Wild Ale', 'Faro', 'Lambic - Fruit', 'Lambic - Unblended',  'Gueuze', 'Gose', 
+             'Flanders Red Ale', 'Flanders Oud Bruin']
+      'Strong Ale': ['American Barleywine', 'Quadrupel (Quad)', 'Belgian Strong Dark Ale', 'English Barleywine', 
+                  'Belgian Strong Pale Ale', 'Scotch Ale / Wee Heavy', 'Old Ale', 'English Strong Ale', 
+                  'American Strong Ale', 'Wheatwine', 'Tripel']
+      'Pilsner': ['American Adjunct Lager', 'American Double / Imperial Pilsner', 'American Pale Lager', 'Light Lager', 
+                'American Malt Liquor', 'German Pilsener', 'Keller Bier / Zwickel Bier', 'Munich Helles Lager', 
+                'Euro Strong Lager', 'Euro Pale Lager', 'Czech Pilsener', 'Dortmunder / Export Lager']
+      'Dark Lager': ['Rauchbier', 'Märzen / Oktoberfest', 'Schwarzbier', 'Vienna Lager', 'Munich Dunkel Lager', 
+               'Euro Dark Lager',  'American Amber / Red Lager', 'Doppelbock', 'Weizenbock', 'Bock', 'Eisbock', 
+               'Maibock / Helles Bock']
+      'Brown Ale': ['English Brown Ale', 'Altbier', 'English Dark Mild Ale',
+       'American Brown Ale']
+    broadcategory: 'beer_type'
+
+  select_rename_features:
+    oldnames: ['beer_beerid', 'beer_name', 'beer_abv', 'beer_type', 'beer_style', 'brewery_name', 'review_profilename', 'mean_review']
+    newnames: ['Beer_ID', 'Beer_Name', 'ABV', 'Type', 'Style', 'Brewery', 'Reviewer', 'Mean_Review']
+    
+  refine_data:
+    idcolname: 'Beer_ID' 
+    usercolname: 'Reviewer'
+    n: 15
+
+train_model:
+  types: ['Stout', 'Porter', 'IPA', 'Wheat Ale', 'Pale Ale', 'Sour', 'Strong Ale', 'Pilsner', 'Dark Lager', 'Brown Ale']
+  
+  filter_data: 
+    col: 'Type'
+
+  get_unique_items: 
+    col: 'Beer_ID' 
+  
+  top_ten_popular: 
+    colnames: ['Beer_ID', 'Beer_Name', 'ABV', 'Type', 'Style', 'Brewery']
+    typecolname: 'Type'
+    idcolname: 'Beer_ID' 
+    reviewcolname: 'Mean_Review'
+  
+  create_combinations:
+    n: 2
+
+  typecolname: 'Type'
+  usercolname: 'Reviewer'
+
+  user_rows_combination_df:
+    reviewcolname: 'Mean_Review' 
+    idcolname: 'Beer_ID'
+    usercolname: 'Reviewer'
+
+  filter_data_user:
+    col: 'Reviewer'
+  
+  build_trainset:
+    colnames: ['Reviewer', 'Beer_ID', 'Mean_Review']
+  
+  build_testset:
+    reviewcolname: 'Mean_Review' 
+    idcolname: 'Beer_ID'
+    usercolname: 'Reviewer'
+
+  create_KNNmodel:
+    k_tuned: 50
+    min_k_tuned: 5
+    user_based_tuned: True
+    seed: 12345
+
+  predictions:
+    colnames: ['Beer_ID', 'Beer_Name', 'ABV', 'Type', 'Style', 'Brewery']
+    idcolname: 'Beer_ID'
+    n: 10
+
+score_model:
+
+  test_type: 'Sour'
+
+  precision_recall_at_k: 
+    k: 10
+    threshold: 3
+
+  cross_validate:
+    colnames: ['Reviewer', 'Beer_ID', 'Mean_Review']
+    k_tuned: 50
+    min_k_tuned: 5
+    user_based_tuned: True
+    seed: 12345
+    folds: 5
+
+configure_db:
+
+  sqlite:
+    SQLITELOCALENGINE: "sqlite:///../data/beers.db"
+  
+  rds:
+    MYSQL_USER: "root"
+    MYSQL_PASSWORD: "A1d8a4m4!!"
+    MYSQL_HOST: "mysql-nw-mollysrour-beer.cwtnz4pff46i.us-east-2.rds.amazonaws.com"
+    MYSQL_PORT: "3306"
+    MYSQL_DB: "msia423"
+    MYSQL_SQLTYPE: "mysql+pymysql"

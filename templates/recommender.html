@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8"">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <meta charset="UTF-8">
+    <link href="static/basic.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="icon" href="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/apple/198/clinking-beer-mugs_1f37b.png">
+</head>
+<body>
+<div id="container" align="center">
+  <div class="main">
+    <br>
+    <br>
+    <gulpheading>🍺Gulp!🍺</mainheading>
+    <br>
+    <br>
+    <mainheading>The Beer Recommendation App</mainheading>
+    <br>
+    <br>
+    <typeheading>Let's check out some beers! You chose this type: {{beertype}}</mainheading>
+    <br>
+    <br>
+    <beertext> Here are the top ten most popular beers for your chosen type. Pick two of them that you like or think you would like. </beertext>
+    <hr style="width:40%">
+    <table>
+        <thead font-size=20px;>
+           <tr>
+              <th>Rank</th>
+              <th>Beer Name</th>
+              <th>ABV</th>
+              <th>Style</th>
+              <th>Brewery</th>
+              <br>
+           </tr>
+        </thead>
+
+        <tbody>
+           {% for beer in listbeers %}
+              <tr>
+                  <td>{{beer.Pkey % 10}} <br></td>
+                  <td>{{ beer.Beer_Name }}<br></td>
+                  <td>{{ beer.ABV }}<br></td>
+                  <td>{{ beer.Style }}<br></td>
+                  <td>{{ beer.Brewery }}<br></td>
+              </tr>
+           {% endfor %}
+        </tbody>
+     </table>
+    <form class=inputs method=post name=userinput action="{{ url_for('get_results')}}">
+    <p>
+      <div align="center">
+        <select name="beerchoice1" id="beerchoice1" class="form-control unstyled">
+            <option>
+                First Chosen Beer
+            </option>
+            <option value="0" >1: {{listbeers[0].Beer_Name}}</option>
+            <option value="1" >2: {{listbeers[1].Beer_Name}}</option>
+            <option value="2" >3: {{listbeers[2].Beer_Name}}</option>
+            <option value="3" >4: {{listbeers[3].Beer_Name}}</option>
+            <option value="4" >5: {{listbeers[4].Beer_Name}}</option>
+            <option value="5" >6: {{listbeers[5].Beer_Name}}</option>
+            <option value="6" >7: {{listbeers[6].Beer_Name}}</option>
+            <option value="7" >8: {{listbeers[7].Beer_Name}}</option>
+            <option value="8" >9: {{listbeers[8].Beer_Name}}</option>
+            <option value="9" >10: {{listbeers[9].Beer_Name}}</option>
+        </select>
+      </div>
+      <br>
+      <br>
+
+      <div align="center">
+            <select name="beerchoice2" id="beerchoice2" class="form-control unstyled">
+                <option>
+                    Second Chosen Beer
+                </option>
+                <option value="0" >1: {{listbeers[0].Beer_Name}}</option>
+                <option value="1" >2: {{listbeers[1].Beer_Name}}</option>
+                <option value="2" >3: {{listbeers[2].Beer_Name}}</option>
+                <option value="3" >4: {{listbeers[3].Beer_Name}}</option>
+                <option value="4" >5: {{listbeers[4].Beer_Name}}</option>
+                <option value="5" >6: {{listbeers[5].Beer_Name}}</option>
+                <option value="6" >7: {{listbeers[6].Beer_Name}}</option>
+                <option value="7" >8: {{listbeers[7].Beer_Name}}</option>
+                <option value="8" >9: {{listbeers[8].Beer_Name}}</option>
+                <option value="9" >10: {{listbeers[9].Beer_Name}}</option>
+            </select>
+          </div>
+
+      <p align="center">
+        <button type="submit" class="w3-button w3-round w3-black" style="color:black;" > Recommend me some beer! </button> 
+        </p>
+    </div>
+</div>
+</body>
+</html>

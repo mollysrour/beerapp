@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8"">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <meta charset="UTF-8">
+    <link href="static/basic.css" rel="stylesheet">
+    <link rel="icon" href="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/apple/198/clinking-beer-mugs_1f37b.png">
+</head>
+<body>
+<div id="container" align="center">
+  <div class="main">
+    <br>
+    <br>
+    <gulpheading>🍺Gulp!🍺</mainheading>
+    <br>
+    <br>
+    <mainheading>The Beer Recommendation App</mainheading>
+    <br>
+    <br>
+    <br>
+    <beertext> Choose a beer type from the following options. Read the descriptions below to learn more about different types of beer. </beertext>
+    <hr style="width:40%">
+    <form class=inputs method=post name=userinput action="{{ url_for('add_entry')}}">
+    <p>
+      <div align="center" >
+        <select name="beertype" id="beertype" class="form-control unstyled">
+            <option>
+                Beer Type
+            </option>
+            <option value="Stout" >Stout</option>
+            <option value="Porter" >Porter</option>
+            <option value="IPA" >IPA</option>
+            <option value="Wheat Ale" >Wheat Ale</option>
+            <option value="Pale Ale" >Pale Ale</option>
+            <option value="Sour" >Sour</option>
+            <option value="Strong Ale" >Strong Ale</option>
+            <option value="Pilsner" >Pilsner</option>
+            <option value="Dark Lager" >Dark Lager</option>
+            <option value="Brown Ale" >Brown Ale</option>
+        </select>
+      </div>
+
+      <p align="center">
+        <button type="submit" class="w3-button w3-round w3-black" style="color:black;" > Explore Beer Type! </button> 
+        </p>
+      </form>
+      
+    </div>
+</div>
+</body>
+</html>
+

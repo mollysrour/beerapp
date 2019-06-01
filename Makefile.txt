@@ -1,0 +1,27 @@
+.PHONY:
+
+beer_reviews.csv: config.yml
+	python acquire_data.py --config=config.yml
+
+raw_data: beer_reviews.csv
+
+cleaned_beer_reviews.csv: config.yml beer_reviews.csv
+	python clean_data.py --config=config.yml --input=‘../data/beer_reviews.csv' --output=‘../data/cleaned_beer_reviews.csv'
+
+cleaned_data: cleaned_beer_reviews.csv
+
+preds.csv: config.yml cleaned_beer_reviews.csv
+	python train_model.py --config='config.yml' --input='../data/cleaned_beer_reviews.csv' --output_preds='../data/preds.csv' --output_top10rows='../data/top10.csv' --output_combinations='../data/combinations.csv'
+
+trained_model: preds.csv
+
+modelscoring.txt: config.yml
+	python score_model.py --config='config.yml' --input='../data cleaned_beer_reviews.csv' --outputtxt='../data/modelscoring.txt'
+
+model_scoring: modelscoring.txt
+
+all: raw_data cleaned_data trained_model model_scoring
+
+python configure_db.py --config='config.yml' --rds=True --input_preds='../data/preds.csv' --input_top10rows='../data/top10.csv' --input_combinations='../data/combinations.csv'
+
+
