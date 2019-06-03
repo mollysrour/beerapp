@@ -97,7 +97,10 @@ Business value: Users can find where a beer is that has been recommended. 8 poin
 ├── data                              <- Folder that contains data used or generated. 
 ├── models                            <- Trained model objects (TMOs), model predictions, and/or model summaries
 ├── src                               <- Source data for the project 
-│   ├── config.py                     <- Configuration file for SQLite, RDS, and S3 parameters
+│   ├── config.yml                    <- Configuration file for model pipeline
+|   ├── acquire_data.py               <- Script for getting source data from my S3 bucket and landing it in your S3 bucket, then landing |                                           it locally
+|   ├── clean_data.py                 <- Script for cleaning data
+|   ├── train_model.py                <- Script for training model on 450 different test users and creating prediction data frame, top 10 beers for each beer type, and user com
 │   ├── createdb.py                   <- Script for creating db in RDS or Sqlite and adding rows
 │   ├── getdata_s3.py                 <- Script for getting source data from my S3 bucket and landing it in your S3 bucket
 ├── requirements.txt                  <- Python package dependencies 
