@@ -114,6 +114,17 @@ This project structure was partially influenced by the [Cookiecutter Data Scienc
 
 The `requirements.txt` file contains the packages required to run the model code. An environment can be set up in two ways. See bottom of README for exploratory data analysis environment setup. 
 
+#### If you do not have pip on your computer:
+
+```bash
+
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+
+python get-pip.py
+
+```
+#### Once pip is installed:
+
 #### With `virtualenv`
 
 ```bash
@@ -137,17 +148,21 @@ pip install -r requirements.txt
 
 ### 2. Collect the data from S3
 
-`config.py` holds the configurations for S3. It includes the following configurations:
+`config.yml` holds the configurations for S3. It includes the following configurations:
 
 ```python
-AWS_KEY_ID=""
-AWS_ACCESS_KEY=""
-AWS_BUCKET=""
-AWS_FILE_PATH=""
+AWS_KEY_ID: ""
+AWS_ACCESS_KEY: ""
+AWS_BUCKET: ""
+AWS_FILE_PATH: ""
 ```
 You must change them to reflect your own S3 credentials.
 
-Then run  `python src/getdata_s3.py`
+Then run  `python src/acquire_data.py`
+
+### 3. Clean data and train model
+
+`config.yml` holds configurations for these scripts
 
 ### 3. Initialize the database in RDS or SQLite
 
