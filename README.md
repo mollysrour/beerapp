@@ -145,7 +145,7 @@ pip install -r requirements.txt
 
 ### 2. Data Pipeline
 
-`config.yml` holds the configurations for S3. It includes the following configurations:
+`src/config.yml` holds the configurations for S3. It includes the following configurations:
 
 ```python
 AWS_KEY_ID: ""
@@ -155,7 +155,7 @@ AWS_FILE_PATH: ""
 ```
 You must change them to reflect your own S3 credentials.
 
-`config.py` holds the configurations for RDS and SQlite. It includes the following configurations:
+`src/config.yml` holds the configurations for RDS and SQlite. It includes the following configurations:
 
 ```python
 #RDS
