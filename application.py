@@ -56,22 +56,28 @@ def add_entry():
     except:
         traceback.print_exc()
         logger.warning("Not able to display beers, error page returned")
-        return('horror ofhorrors')
-        #return render_template('error.html')
+        return render_template('error-noselection.html')
 
 @app.route('/results', methods=['POST'])
 def get_results():
     """View that process a POST with new song input
     :return: redirect to index page
     """
-    firstbeer = int(request.form['beerchoice1'])
-    secondbeer = int(request.form['beerchoice2'])
+    try:
+        firstbeer = int(request.form['beerchoice1'])
+        secondbeer = int(request.form['beerchoice2'])
+    except:
+        traceback.print_exc()
+        logger.warning("Not able to display beers, error page returned")
+        return render_template('error-noselection.html')
     try:
         listbeers = db.session.query(Top_Ten_Beers).filter_by(Type=beertype)
         logger.debug("Index page accessed")
     except:
         traceback.print_exc()
         logger.warning("Not able to display beers, error page returned")
+    if firstbeer==secondbeer:
+        return render_template('error-samebeers.html')
     names, data = query_to_list(listbeers)
     top10df = pd.DataFrame.from_records(data, columns=names)
     usercomb = top10df.iloc[[firstbeer, secondbeer],:]
@@ -94,7 +100,7 @@ def get_results():
     except:
         traceback.print_exc()
         logger.warning("Not able to display beers, error page returned")
-        return('horror of horrows')
+        return render_template('error-noselection.html')
 
 if __name__ == "__main__":
 

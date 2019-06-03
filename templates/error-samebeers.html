@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8"">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <meta charset="UTF-8">
+    <link href="static/basic.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="icon" href="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/apple/198/clinking-beer-mugs_1f37b.png">
+</head>
+<body>
+<div id="container" align="center">
+  <div class="main">
+    <br>
+    <br>
+    <gulpheading>🍺Gulp!🍺</mainheading>
+    <br>
+    <br>
+    <mainheading>The Beer Recommendation App</mainheading>
+    <br>
+    <br>
+    <typeheading>Sorry, you must select two separate beers to get a recommendation! 😔 </typeheading>
+    <br>
+    <typeheading>Unfortunately, you need to return to the main page and re-select your beer type and choices. </typeheading>
+    <form action="{{ url_for('intro_page')}}">
+    <p align="center">
+            <button type="submit" class="w3-button w3-round w3-black" style="color:black;" > Start over </button> 
+            </p> </form>
+        </div>
+    </div>
+    </body>
+    </html>
