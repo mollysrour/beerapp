@@ -39,7 +39,11 @@
         <tbody>
            {% for beer in listbeers %}
               <tr>
+                  {% if beer.Pkey % 10 == 0 %}
+                  <td> 10</td>
+                  {% else %}
                   <td>{{beer.Pkey % 10}} <br></td>
+                  {% endif %}
                   <td>{{ beer.Beer_Name }}<br></td>
                   <td>{{ beer.ABV }}<br></td>
                   <td>{{ beer.Style }}<br></td>
@@ -90,7 +94,7 @@
 
       <p align="center">
         <button type="submit" class="w3-button w3-round w3-black" style="color:black;" > Recommend me some beer! </button> 
-        </p>
+        </p> </form>
     </div>
 </div>
 </body>
