@@ -129,7 +129,7 @@ score_model:
 configure_db:
 
   sqlite:
-    SQLITELOCALENGINE: "sqlite:///../data/beers.db"
+    SQLITELOCALENGINE: "sqlite:///data/beers.db"
   
   rds:
     MYSQL_USER: "root"

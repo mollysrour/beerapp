@@ -19,7 +19,7 @@ modelscoring.txt: data/cleaned_beer_reviews.csv src/config.yml
 model_scoring: modelscoring.txt
 
 beers.db: data/preds.csv data/top10.csv data/combinations.csv src/configure_db.py src/config.yml
-	python src/configure_db.py --config='config.yml' --rds=True --input_preds='data/preds.csv' --input_top10rows='data/top10.csv' --input_combinations='data/combinations.csv'
+	python src/configure_db.py --config=src/config.yml --input_preds='data/preds.csv' --input_top10rows='data/top10.csv' --input_combinations='data/combinations.csv'
 
 configure_db: beers.db
 
