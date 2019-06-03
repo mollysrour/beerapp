@@ -1,16 +1,16 @@
 acquire_data:
   sourcetoS3:
-    AWS_KEY_ID: ''
-    AWS_ACCESS_KEY: '' 
+    AWS_KEY_ID: 'AKIAIHUMXPGAWWGO7DYQ'
+    AWS_ACCESS_KEY: 'kABCROQh5Qop/6lgdVIxDm8pIjbfKSYxPc1JgRFt' 
     AWS_BUCKET: 'testbucket-mollysrour'
     AWS_FILE_PATH: 'beer_reviews.csv'
   
   S3tolocal:
-    AWS_KEY_ID: ''
-    AWS_ACCESS_KEY: '' 
+    AWS_KEY_ID: 'AKIAIHUMXPGAWWGO7DYQ'
+    AWS_ACCESS_KEY: 'kABCROQh5Qop/6lgdVIxDm8pIjbfKSYxPc1JgRFt' 
     AWS_BUCKET: 'testbucket-mollysrour'
     AWS_FILE_PATH: 'beer_reviews.csv'
-    localfilepath: '../data/beer_reviews.csv'
+    localfilepath: 'data/beer_reviews.csv'
   
 clean_data:
 
