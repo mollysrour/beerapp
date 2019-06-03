@@ -7,3 +7,13 @@ pytest==4.0.1
 pymysql==0.9.3
 pandas==0.24.2
 boto3==1.9.148
+argparse
+yaml
+logging
+surprise
+collections
+itertools
+os
+sys
+sqlite3
+traceback

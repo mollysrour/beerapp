@@ -11,7 +11,7 @@ import sqlite3
 Base = declarative_base()  
 
 class Top_Ten_Beers(Base):
-    """Create a data model for the database to be set up for capturing songs """
+    """Schema for Top Ten Beers Table """
     __tablename__ = 'top_ten_beers'
     Pkey = Column(Integer, primary_key=True)
     Beer_ID = Column(Integer, unique=False, nullable=False)
@@ -26,7 +26,7 @@ class Top_Ten_Beers(Base):
 	    return top_ten_beers_repr %(self.Beer_ID, self.Beer_Name, self.ABV, self.Type, self.Style, self.Brewery)
 
 class User_Combinations(Base):
-    """Create a data model for the database to be set up for capturing songs """
+    """Schema for User Combinations Table """
     __tablename__ = 'user_combinations'
     Pkey = Column(Integer, primary_key=True)
     Beer_ID = Column(Integer, unique=False, nullable=False)
@@ -42,7 +42,7 @@ class User_Combinations(Base):
         return user_combinations_repr %(self.Beer_ID, self.Beer_Name, self.ABV, self.Type, self.Style, self.Brewery, self.ID)
 
 class User_Predictions(Base):
-	"""Create a data model for the database to be set up for capturing songs """
+	"""Schema for User Predictions Table"""
 	__tablename__ = 'user_predictions'
 	Pkey = Column(Integer, primary_key=True)
 	Beer_ID = Column(Integer, unique=False, nullable=False)
@@ -57,8 +57,8 @@ class User_Predictions(Base):
 		user_predictions_repr = "<User_Predictions(Beer_ID='%d', score = '%f', Beer_Name='%s', ABV='%f', Type='%s', Style='%s', Brewery='%s', ID='%s')>"
 		return user_predictions_repr %(self.Beer_ID, self.score, self.Beer_Name, self.ABV, self.Type, self.Style, self.Brewery, self.ID)
 
-def create_connection(rds=False, MYSQL_HOST='127.0.0.1', MYSQL_DB="", MYSQL_SQLTYPE="", MYSQL_PORT=10000,
-                      MYSQL_USER="", MYSQL_PASSWORD="", SQLITELOCALENGINE=""):
+def create_connection(rds=False, MYSQL_HOST='', MYSQL_DB="", MYSQL_SQLTYPE="mysql+pymysql", MYSQL_PORT=3306,
+                      MYSQL_USER="", MYSQL_PASSWORD="", SQLITELOCALENGINE="sqlite:///../data/beers.db"):
 	"""Creates RDS/SQlite connection.
 	
 	Keyword Arguments:
