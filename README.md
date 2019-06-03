@@ -104,15 +104,7 @@ Business value: Users can find where a beer is that has been recommended. 8 poin
 ```
 This project structure was partially influenced by the [Cookiecutter Data Science project](https://drivendata.github.io/cookiecutter-data-science/).
 
-## Documentation
- 
-* Open up `docs/build/html/index.html` to see Sphinx documentation docs. 
-* See `docs/README.md` for keeping docs up to date with additions to the repository.
-
 ## Running the application 
-### 1. Set up environment 
-
-The `requirements.txt` file contains the packages required to run the model code. An environment can be set up in two ways. See bottom of README for exploratory data analysis environment setup. 
 
 #### If you do not have pip on your computer:
 
@@ -124,6 +116,11 @@ python get-pip.py
 
 ```
 #### Once pip is installed:
+
+### 1. Set up environment 
+
+The `requirements.txt` file contains the packages required to run the model code. An environment can be set up in two ways. See bottom of README for exploratory data analysis environment setup. 
+
 
 #### With `virtualenv`
 
@@ -146,7 +143,7 @@ pip install -r requirements.txt
 
 ```
 
-### 2. Collect the data from S3
+### 2. Data Pipeline
 
 `config.yml` holds the configurations for S3. It includes the following configurations:
 
@@ -158,27 +155,24 @@ AWS_FILE_PATH: ""
 ```
 You must change them to reflect your own S3 credentials.
 
-Then run  `python src/acquire_data.py`
-
-### 3. Clean data and train model
-
-`config.yml` holds configurations for these scripts
-
-### 3. Initialize the database in RDS or SQLite
-
 `config.py` holds the configurations for RDS and SQlite. It includes the following configurations:
 
 ```python
 #RDS
-MYSQL_USER=""
-MYSQL_PASSWORD=""
-MYSQL_HOST=""
-MYSQL_PORT=""
-MYSQL_DB = ""
-MYSQL_SQLTYPE=""
+MYSQL_USER: ""
+MYSQL_PASSWORD: ""
+MYSQL_HOST: ""
+MYSQL_PORT: ""
+MYSQL_DB: ""
+MYSQL_SQLTYPE:""
 #SQLITE
-SQLITELOCALENGINE = ""
+SQLITELOCALENGINE: ""
 ```
 You must change them to reflect your RDS and/or local SQLite credentials.
 Note: the SQLITELOCALENGINE must begin with sqlite:/// before the filepath.
-Then run `python src/createdb.py --rds` for creating the db in RDS or run `python src/createdb.py` to create it in SQLite
+
+Then run  `make all`
+
+### 3. Launch App
+
+Run `python application.py`
