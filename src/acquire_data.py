@@ -42,7 +42,7 @@ def S3tolocal(AWS_KEY_ID=None, AWS_ACCESS_KEY=None, AWS_BUCKET=None, AWS_FILE_PA
     logger.info('Successfully transferred data to local file %s', localfilepath)
     
 def run_acquire(args):
-    """[summary]
+    """Runs script to acquire data.
     
     Arguments:
         args {argparse.Namespace} -- Script arguments, in this case, path to config file.
