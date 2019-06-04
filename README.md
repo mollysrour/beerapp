@@ -156,15 +156,13 @@ pip install -r requirements.txt
     ```
 
 2.  Set your RDS MYSQL environment variables by running the following commands, all must be in quotes
-   ```bash
-   
+    ```bash
     export MYSQL_USER=""
     export MYSQL_PASSWORD=""
     export MYSQL_HOST=""
     export MYSQL_PORT=""
     
     ```
-    
 ### 3. Data Pipeline
 
 Change the configurations in `src/config.yml` to your desired configureations.  The README in the src folder has explanations for the configurations.
