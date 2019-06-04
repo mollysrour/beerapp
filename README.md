@@ -146,36 +146,24 @@ pip install -r requirements.txt
 
 ```
 
-### 2. Data Pipeline
+### 2. Configure AWS Credentials for S3 and RDS
 
-`src/config.yml` holds the configurations for S3. It includes the following configurations:
+1.  Set your AWS environment variables by running the following commands, all must be in quotes:
+    a.  export AWS_ACCESS_KEY_ID=""
+    b.  export AWS_SECRET_ACCESS_KEY=""
 
-```python
-AWS_KEY_ID: ""
-AWS_ACCESS_KEY: ""
-AWS_BUCKET: ""
-AWS_FILE_PATH: ""
-```
-You must change them to reflect your own S3 credentials.
+2.  Set your RDS MYSQL environment variables by running the following commands, all must be in quotes
+    export MYSQL_USER=""
+    export MYSQL_PASSWORD=""
+    export MYSQL_HOST=""
+    export MYSQL_PORT=""
+    
+### 3. Data Pipeline
 
-`src/config.yml` holds the configurations for RDS and SQlite. It includes the following configurations:
+Change the configurations in `src/config.yml` to your desired configureations.  The README in the src folder has explanations for the configurations.
 
-```python
-#RDS
-MYSQL_USER: ""
-MYSQL_PASSWORD: ""
-MYSQL_HOST: ""
-MYSQL_PORT: ""
-MYSQL_DB: ""
-MYSQL_SQLTYPE:""
-#SQLITE
-SQLITELOCALENGINE: ""
-```
-You must change them to reflect your RDS and/or local SQLite credentials.
-Note: the SQLITELOCALENGINE must begin with sqlite:/// before the filepath.
+Run  `make all`
 
-Then run  `make all`
-
-### 3. Launch App
+### 4. Launch App
 
 Run `python application.py`
