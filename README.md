@@ -150,8 +150,8 @@ pip install -r requirements.txt
 
 1.  Set your AWS environment variables by running the following commands, all must be in quotes:
     ```bash
-    export AWS_ACCESS_KEY_ID=""
-    export AWS_SECRET_ACCESS_KEY=""
+    export AWS_KEY_ID=""
+    export AWS_ACCESS_KEY=""
     
     ```
 
