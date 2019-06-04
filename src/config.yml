@@ -1,13 +1,9 @@
 acquire_data:
-  sourcetoS3:
-    AWS_KEY_ID: 'AKIAIHUMXPGAWWGO7DYQ'
-    AWS_ACCESS_KEY: 'kABCROQh5Qop/6lgdVIxDm8pIjbfKSYxPc1JgRFt' 
+  sourcetoS3: 
     AWS_BUCKET: 'testbucket-mollysrour'
     AWS_FILE_PATH: 'beer_reviews.csv'
   
   S3tolocal:
-    AWS_KEY_ID: 'AKIAIHUMXPGAWWGO7DYQ'
-    AWS_ACCESS_KEY: 'kABCROQh5Qop/6lgdVIxDm8pIjbfKSYxPc1JgRFt' 
     AWS_BUCKET: 'testbucket-mollysrour'
     AWS_FILE_PATH: 'beer_reviews.csv'
     localfilepath: 'data/beer_reviews.csv'
@@ -64,18 +60,20 @@ clean_data:
 
 train_model:
   types: ['Stout', 'Porter', 'IPA', 'Wheat Ale', 'Pale Ale', 'Sour', 'Strong Ale', 'Pilsner', 'Dark Lager', 'Brown Ale']
-  
+  idcolname: 'Beer_ID'
+
   filter_data: 
     col: 'Type'
 
   get_unique_items: 
     col: 'Beer_ID' 
   
-  top_ten_popular: 
+  top_n_popular: 
     colnames: ['Beer_ID', 'Beer_Name', 'ABV', 'Type', 'Style', 'Brewery']
     typecolname: 'Type'
     idcolname: 'Beer_ID' 
     reviewcolname: 'Mean_Review'
+    n: 10
   
   create_combinations:
     n: 2
@@ -93,6 +91,7 @@ train_model:
   
   build_trainset:
     colnames: ['Reviewer', 'Beer_ID', 'Mean_Review']
+    rating_scale: (1,5)
   
   build_testset:
     reviewcolname: 'Mean_Review' 
@@ -100,10 +99,10 @@ train_model:
     usercolname: 'Reviewer'
 
   create_KNNmodel:
-    k_tuned: 50
-    min_k_tuned: 5
-    user_based_tuned: True
-    seed: 12345
+    k: 50
+    min_k: 5
+    user_based: True
+    random_state: 12345
 
   predictions:
     colnames: ['Beer_ID', 'Beer_Name', 'ABV', 'Type', 'Style', 'Brewery']
@@ -114,18 +113,11 @@ score_model:
 
   test_type: 'Sour'
 
-  precision_recall_at_k: 
-    k: 10
-    threshold: 3
-
-  cross_validate:
-    colnames: ['Reviewer', 'Beer_ID', 'Mean_Review']
-    k_tuned: 50
-    min_k_tuned: 5
-    user_based_tuned: True
-    seed: 12345
+  kfold_crossvalidation:
     folds: 5
-
+    k: 5
+    threshold: 4
+  
 configure_db:
 
   sqlite:

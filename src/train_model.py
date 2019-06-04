@@ -1,17 +1,13 @@
-import pandas as pd
-from surprise import Dataset
-from surprise import Reader
-from surprise import KNNBasic
+from surprise import Dataset, Reader, KNNBasic
 from collections import defaultdict
 from itertools import combinations
-import yaml
-import os
-import logging
+import pandas as pd
 import argparse
+import logging
+import yaml
 
 def filter_data(df, value, col):
-    """Given a data frame, column name, and value, outputs data frame with rows that have that value in the column
-    in the typecol
+    """Given a data frame, column name, and value, outputs filtered data frame with rows that have that column value.
 
     Arguments:
     df {pd.DataFrame} -- Pandas DataFrame
@@ -33,13 +29,13 @@ def get_unique_items(df, col):
         col {str or list} -- Specified column name or list of column names
     
     Returns:
-        itemlist {list} -- List of unique items in col or unique combinations of columns
+        itemlist {list or pd.DataFrame} -- List of unique items in col or unique combinations of columns
     """
     itemlist = df[col].drop_duplicates()
     return itemlist
 
-def top_ten_popular(df, typename, colnames, typecolname='Type', idcolname='Beer_ID', reviewcolname='Mean_Review'):
-    """Returns the top ten most popular items in a dataset given a specific value of the type column.
+def top_n_popular(df, typename, colnames, typecolname='Type', idcolname='Beer_ID', reviewcolname='Mean_Review', n=10):
+    """Returns the top n most popular items in a dataset given a specific value of the type column.
 
     Args:
         df {pd.DataFrame} -- Full dataframe
@@ -48,21 +44,21 @@ def top_ten_popular(df, typename, colnames, typecolname='Type', idcolname='Beer_
         typecolname {str} -- column name for type (default: {'Type'})
         idcolname {str} -- column name for item id (default: {'Beer_ID'})
         reviewcolname {str} -- column name for reviews (default: {'Mean_Review'})
-
+        n {int} -- number of most popular items to return
     Returns:
-        top10df {pd.DataFrame} -- DF showing the rows corresponding to the top 10 items, with review and profile name dropped.
+        top10df {pd.DataFrame} -- DF showing the rows corresponding to the top n items, with review and profile name dropped.
     """
-    df_onetype = df[df[typecolname]==typename] #df filtered by value in type column
+    df_onetype = filter_data(df, typename, typecolname) #df filtered by value in type column
     df_groupedbyID = df_onetype.groupby([idcolname]).mean() #df grouped by item id, averaging reviews
     df_groupedbyID = df_groupedbyID.sort_values(reviewcolname, ascending=False) #sort df by review, descending
-    top10 = df_groupedbyID.index[0:10].values.tolist() #find index of top 10 items
-    top10df = df_onetype[df_onetype[idcolname].isin(top10)][colnames].drop_duplicates() #df containing the top 10 items
-    return top10df
+    top = df_groupedbyID.index[0:n].values.tolist() #find index of top 10 items
+    topdf = get_unique_items(df_onetype[df_onetype[idcolname].isin(top)], colnames) #df containing the top 10 items
+    return topdf
 
 
 def create_combinations(df, typename, n=2):
-    """Creates dataframe of all possible row combinations of n rows, given a dataframe. Also creates column 'ID' based on user input 
-    of a string.
+    """Creates dataframe of all possible row combinations of n rows, given a dataframe. 
+    Also creates column 'ID' with value typename with index appended.
 
     Args:
         df {pd.DataFrame} -- Full dataframe
@@ -73,16 +69,16 @@ def create_combinations(df, typename, n=2):
         combdf {pd.DataFrame} -- DF of all possible row combinations of n rows with ID column added. Total number of rows will be
                                 nrow(df) choose n.
     """
-    thelist = []
-    i = 1
-    for index in list(combinations(df.index,n)):
-        minidf = df.loc[index,:]
-        minidf['ID'] = typename + str(i)
-        thelist.append(minidf)
-        i=i+1
-    combdf = pd.concat(thelist, ignore_index=True)
-    return combdf
-
+    combolist = []
+    index = 1
+    for i in list(combinations(df.index,n)):
+        minidf = df.loc[i,:]
+        minidf['ID'] = typename + str(index)
+        combolist.append(minidf)
+        index=index+1
+    combodf = pd.concat(combolist, ignore_index=True)
+    return combodf
+ 
 def create_user_rows(user_choices, user_id, idlist, reviewcolname='Mean_Review', idcolname='Beer_ID', usercolname='Reviewer'):
     """Creates new dataframe containing rows for a new user who is interested in items in user_choices
     
@@ -97,8 +93,7 @@ def create_user_rows(user_choices, user_id, idlist, reviewcolname='Mean_Review',
     Returns:
         user_rows {pd.DataFrame} -- dataframe containing rows for a new user who is interested in items in user_choices
     """
-    user_rows = pd.DataFrame({usercolname: user_id,
-                                idcolname: idlist, reviewcolname: 0})
+    user_rows = pd.DataFrame({usercolname: user_id, idcolname: idlist, reviewcolname: 0})
     choiceitems = user_rows[idcolname].isin(user_choices)
     user_rows.loc[choiceitems, reviewcolname] = 5
     return user_rows
@@ -130,13 +125,14 @@ def user_rows_combination_df(combdf, idlist, reviewcolname='Mean_Review', idcoln
     return final_user_rows, user_idlist
 
 
-def build_trainset(df, user_rows=None, colnames=None):
+def build_trainset(df, user_rows=None, colnames=None, rating_scale=(1,5)):
     """Create a training set for a collaborative filtering algorithm using scikit surprise
     
     Arguments:
         df {pd.DataFrame} -- dataframe
         user_rows {pd.DataFrame} -- Dataframe rows for new users with ratings for chosen items (default: {None})
         colnames {list} -- list of column names for userID, itemID, review, in that order. (default: {None})
+        rating_scale {tuple} -- range of rating scale
 
     Returns:
         trainset {surprise.trainset.Trainset} -- training data in the Surprise package format
@@ -145,7 +141,7 @@ def build_trainset(df, user_rows=None, colnames=None):
         train = df[colnames]
     else:
         train = df
-    reader = Reader(line_format='user item rating', rating_scale=(1, 5))
+    reader = Reader(line_format='user item rating', rating_scale=rating_scale)
     if user_rows is not None:
         trainset_load = Dataset.load_from_df(pd.concat([train, user_rows]), reader)
     else:
@@ -170,7 +166,7 @@ def build_testset(df, reviewcolname='Mean_Review', idcolname='Beer_ID', usercoln
     logger.info('Testset built.')
     return testset
 
-def create_KNNmodel(trainset, testset, k_tuned=50, min_k_tuned=5, user_based_tuned=True, seed=12345):
+def create_KNNmodel(trainset, k_tuned=50, min_k_tuned=5, user_based_tuned=True, seed=12345):
     """Train the KNN model given a training set and model parameters
     
     Arguments:
@@ -185,7 +181,7 @@ def create_KNNmodel(trainset, testset, k_tuned=50, min_k_tuned=5, user_based_tun
     """
     model = KNNBasic(k=k_tuned, min_k=min_k_tuned, user_based=user_based_tuned, random_state=seed)
     logger.info('Model built.')
-    model.fit(trainset).test(testset)
+    model.fit(trainset)
 
     return model
 
@@ -242,35 +238,56 @@ def predictions(df, model, user_id, testset, toptenlist, colnames, idcolname='Be
     user_recommend = pd.merge(user_score, get_unique_items(df, colnames), on=idcolname, how='left')
     return user_recommend
 
+def topten_fromdata(data, i, config):
+    """Gets relevant information about top ten most popular rows in a dataset for a specific category pandas dataframe
+    
+    Arguments: 
+        data {pd.DataFrame} -- Pandas DataFrame
+        i {str} -- category value to filter the data on
+        config {dict} -- configuration dictionary
+    
+    Returns:
+        typedata {pd.DataFrame} -- data filtered by category value i (category column specified by config)
+        itemlist {list} -- list of unique values of a column, specified by config, in data
+        top10df {pd.DataFrame} -- 10 rows of data corresponding to top ten most popular items, sorted
+        toptenlist {list} -- list of unique values of a column, specified by config, in top10df
+    """
+    typedata = filter_data(data, i, **config['filter_data'])
+    itemlist = get_unique_items(typedata, **config['get_unique_items'])
+    top10df = top_n_popular(typedata, i, **config['top_ten_popular'])
+    toptenlist = get_unique_items(top10df, **config['idcolname'])
+
+    return typedata, itemlist, top10df, toptenlist
+
+def onepred_fromdata(j, user_rows, toptenlist, typedata, config):
+    userdata = filter_data(user_rows, j, **config['filter_data_user'])
+    trainset = build_trainset(typedata, userdata, **config['build_trainset'])
+    testset = build_testset(userdata, **config['build_testset'])
+    model = create_KNNmodel(trainset, **config['create_KNNmodel'])
+    preds = predictions(typedata, model, j, testset, toptenlist, **config['predictions'])
+    preds['ID'] = j
+    return preds
+
 def run_train(args):
     if args.config is not None:
         with open(args.config, "r") as f:
 	        config = yaml.load(f)
         config = config['train_model']
     else:
-        raise ValueError("Path to CSV for input data must be provided through --input")
-
+        raise ValueError("Path to config must be provided through --config")
     if args.input is not None:
         data = pd.read_csv(args.input)
         predoutput = []
         top10output = []
         combinationoutput = []
         for i in config['types']:
-            typedata = filter_data(data, i, **config['filter_data'])
-            itemlist = get_unique_items(typedata, **config['get_unique_items'])
-            top10df = top_ten_popular(typedata, i, **config['top_ten_popular'])
-            toptenlist = get_unique_items(top10df, 'Beer_ID')
+            typedata, itemlist, top10df, toptenlist = topten_fromdata(data, i, config)
             top10output.append(top10df)
             combrows = create_combinations(top10df, i, **config['create_combinations'])
             combinationoutput.append(combrows)
             user_rows, user_idlist = user_rows_combination_df(combrows, itemlist, **config['user_rows_combination_df'])
             for j in user_idlist:
-                userdata = filter_data(user_rows, j, **config['filter_data_user'])
-                trainset = build_trainset(typedata, userdata, **config['build_trainset'])
-                testset = build_testset(userdata, **config['build_testset'])
-                model = create_KNNmodel(trainset, **config['create_KNNmodel'])
-                preds = predictions(typedata, model, j, testset, toptenlist, **config['predictions'])
-                preds['ID'] = j
+                preds = onepred_fromdata(j, user_rows, toptenlist, typedata, config)
                 predoutput.append(preds)
         output_preds_df = pd.concat(predoutput, ignore_index=True)
         output_top10_df = pd.concat(top10output, ignore_index=True)

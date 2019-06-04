@@ -1,15 +1,13 @@
-import pandas as pd
-from surprise import Dataset
-from surprise import Reader
-from surprise import KNNBasic
+from surprise import Dataset, Reader, KNNBasic
 from surprise.model_selection import train_test_split, KFold
 from collections import defaultdict
 from itertools import combinations
-import yaml
-import os
-import logging
-import argparse
 import train_model as tm 
+import pandas as pd
+import numpy as np
+import argparse
+import logging
+import yaml
 
 def precision_recall_at_k(predictions, outputtxt = None, k=10, threshold=3):
     """Returns average precision and recall at k metrics for each user.
@@ -20,7 +18,6 @@ def precision_recall_at_k(predictions, outputtxt = None, k=10, threshold=3):
         k {int} -- number of metrics -- (default: {10})
         threshold {int} -- ratings threshold -- (default {3})
     """
-    
     user_est_true = defaultdict(list)
     for uid, _, true_r, est, _ in predictions:
         user_est_true[uid].append((est, true_r)) # First map the predictions to each user.
@@ -38,26 +35,71 @@ def precision_recall_at_k(predictions, outputtxt = None, k=10, threshold=3):
     
     return precisions, recalls
 
-def cross_validate(data, outputtxt, colnames, k_tuned, min_k_tuned, user_based_tuned, seed, folds):
-    data = data[colnames]
-    reader = Reader(rating_scale=(1, 5))
+def data_model_forcrossvalidation(data, config_train):
+    """Creates data and empty model for use in kfold_crossvalidation function
+    
+    Arguments:
+        data {pd.DataFrame} -- Pandas DataFrame
+        config_train {dict} -- Dictionary of configurations corresponding to the train_model script
+    
+    Returns:
+        data {surprise.dataset.DatasetAutoFolds} -- Surprise Dataset ready for cross validation
+        model {surprise.prediction_algorithms.knns.KNNBasic} -- Surprise KNNBasic Model
+    """
+    t_configs = config_train['build_trainset']
+    data = data[t_configs['colnames']]
+    print(t_configs['rating_scale'])
+    reader = Reader(rating_scale=(1,5))
     data = Dataset.load_from_df(data, reader)
-    algo_KNNbasic = KNNBasic(k = k_tuned, min_k = min_k_tuned, user_based=user_based_tuned, random_state = seed)
-    kf = KFold(n_splits=folds)
-    for trainset, testset in kf.split(data):
-        algo_KNNbasic.fit(trainset)
-        predictions = algo_KNNbasic.test(testset)
-        precisions, recalls = precision_recall_at_k(predictions, k=5, threshold=4)
+    model = KNNBasic(**config_train['create_KNNmodel'])
+    return data, model
 
-    # Precision and recall can then be averaged over all users
-    print(sum(prec for prec in precisions.values()) / len(precisions))
-    print(sum(rec for rec in recalls.values()) / len(recalls))
-    total_precision = (sum(prec for prec in precisions.values()) / len(precisions))
-    total_recall = (sum(rec for rec in recalls.values()) / len(recalls))
+def kfold_crossvalidation(data, model, folds=5, k=5, threshold=4):
+    """Preforms K fold crossvalidation on a KNN surprise model and returns average precision and recall.
+    
+    Arguments:
+        data {surprise.dataset.DatasetAutoFolds} -- Surprise Dataset
+        model {surprise.prediction_algorithms.knns.KNNBasic} -- Surprise KNNBasic model
+        folds {int} -- number of folds in cross validation (default: {5})
+        k {int} -- number of metrics -- (default: {10})
+        threshold {int} -- ratings threshold -- (default {3})
+    
+    Returns:
+        average_precision {float} -- Average precision of the model
+        average_recall {float} -- Average recall of the model
+    """
+    kf = KFold(n_splits=folds)
+    preclist = []
+    reclist = []
+    for trainset, testset in kf.split(data):
+        model.fit(trainset)
+        predictions = model.test(testset)
+        precisions, recalls = precision_recall_at_k(predictions, k=k, threshold=threshold)
+        total_precision = (sum(prec for prec in precisions.values()) / len(precisions))
+        total_recall = (sum(rec for rec in recalls.values()) / len(recalls))
+        preclist.append(total_precision)
+        reclist.append(total_recall)
+    average_precision = np.mean(preclist)
+    average_recall = np.mean(reclist)
+    return average_precision, average_recall
+
+def create_output(data, model, outputtxt, config):
+    """Creates model scoring output of precision and recall
+    
+    Arguments:
+        data {surprise.dataset.DatasetAutoFolds} -- Surprise Dataset
+        model {surprise.prediction_algorithms.knns.KNNBasic} -- Surprise KNNBasic model
+        outputtxt {str} -- File path for output text file
+        config {dict} -- Dictionary of configurations corresponding to the score_model script
+    
+    Raises:
+        ValueError: "Path to textfile for outputtxt data must be provided through --outputtxt
+    """
+    average_precision, average_recall = kfold_crossvalidation(data, model, **config['kfold_crossvalidation'])
     if outputtxt is not None:
         with open(outputtxt, "w") as f:
-            print('Average Precision of Model: %0.3f' % total_precision, file = f)
-            print('Accuracy Recall of Model: %0.3f' % total_recall, file = f)
+            print('Average Precision of Model: %0.3f' % average_precision, file = f)
+            print('Average Recall of Model: %0.3f' % average_recall, file = f)
         logger.info('Model evaluation saved to text file.')
     else:
         raise ValueError("Path to textfile for outputtxt data must be provided through --outputtxt")
@@ -74,16 +116,17 @@ def run_scoring(args):
     if args.input is not None:
         data = pd.read_csv(args.input)
         typedata = tm.filter_data(data, config_score['test_type'], **config_train['filter_data'])
+        finaldata, model = data_model_forcrossvalidation(typedata, config_train)
         if args.outputtxt is not None:
-            cross_validate(data, args.outputtxt, **config_score['cross_validate'])
+            create_output(finaldata, model, args.outputtxt, config_score)
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG, format='%(name)s - %(levelname)s - %(asctime)s - %(message)s')
     logger = logging.getLogger(__file__)
     parser = argparse.ArgumentParser(description="Add config.yml in args")
     parser.add_argument('--config', default='config.yml', help='config.yml')
-    parser.add_argument('--input', default='../data/cleaned_beer_reviews.csv', help='config.yml')
-    parser.add_argument('--outputtxt', default='../data/modelscoring.txt', help='config.yml')
+    parser.add_argument('--input', default='data/cleaned_beer_reviews.csv', help='config.yml')
+    parser.add_argument('--outputtxt', default='data/modelscoring.txt', help='config.yml')
     args = parser.parse_args()
 
     run_scoring(args)
