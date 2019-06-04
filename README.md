@@ -149,14 +149,21 @@ pip install -r requirements.txt
 ### 2. Configure AWS Credentials for S3 and RDS
 
 1.  Set your AWS environment variables by running the following commands, all must be in quotes:
-    a.  export AWS_ACCESS_KEY_ID=""
-    b.  export AWS_SECRET_ACCESS_KEY=""
+    ```bash
+    export AWS_ACCESS_KEY_ID=""
+    export AWS_SECRET_ACCESS_KEY=""
+    
+    ```
 
 2.  Set your RDS MYSQL environment variables by running the following commands, all must be in quotes
+   ```bash
+   
     export MYSQL_USER=""
     export MYSQL_PASSWORD=""
     export MYSQL_HOST=""
     export MYSQL_PORT=""
+    
+    ```
     
 ### 3. Data Pipeline
 
