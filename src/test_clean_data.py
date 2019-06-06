@@ -77,7 +77,7 @@ def test_select_rename_features():
 
 def test_refine_data():
     inputs = {
-        'Beer_ID': ['BeerA', 'BeerA', 'BeerA', 'BeerA', 'ReviewerB'],
+        'Beer_ID': ['BeerA', 'BeerA', 'BeerA', 'BeerA', 'BeerB'],
         'review_overall' : [1.5, 3.0, 3.0, 3.0, 4.0],
         'Reviewer': ['ReviewerA', 'ReviewerB', 'ReviewerC', 'ReviewerD', 'ReviewerA']}
     the_input = pd.DataFrame(inputs)
