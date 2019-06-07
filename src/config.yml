@@ -59,7 +59,7 @@ clean_data:
     n: 15
 
 train_model:
-  types: ['Stout', 'Porter', 'IPA', 'Wheat Ale', 'Pale Ale', 'Sour', 'Strong Ale', 'Pilsner', 'Dark Lager', 'Brown Ale']
+  types: ['Sour']
   idcolname: 'Beer_ID'
 
   filter_data: 
@@ -70,7 +70,6 @@ train_model:
   
   top_n_popular: 
     colnames: ['Beer_ID', 'Beer_Name', 'ABV', 'Type', 'Style', 'Brewery']
-    typecolname: 'Type'
     idcolname: 'Beer_ID' 
     reviewcolname: 'Mean_Review'
     n: 10
@@ -91,7 +90,6 @@ train_model:
   
   build_trainset:
     colnames: ['Reviewer', 'Beer_ID', 'Mean_Review']
-    rating_scale: (1,5)
   
   build_testset:
     reviewcolname: 'Mean_Review' 
@@ -127,6 +125,6 @@ configure_db:
     MYSQL_USER: "root"
     MYSQL_PASSWORD: "A1d8a4m4!!"
     MYSQL_HOST: "mysql-nw-mollysrour-beer.cwtnz4pff46i.us-east-2.rds.amazonaws.com"
-    MYSQL_PORT: 3306
+    MYSQL_PORT: '3306'
     MYSQL_DB: "msia423"
     MYSQL_SQLTYPE: "mysql+pymysql"

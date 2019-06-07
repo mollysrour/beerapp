@@ -17,7 +17,8 @@ def filter_data(df, value, col):
     Returns:
     onetypedf {pd.DataFrame} -- Filtered DataFrame
     """
-    onetypedf = df[df[col]==value]
+    onetypedf = df[df[col]==value] #Filtered by column value
+    onetypedf = onetypedf.reset_index(drop=True) #remove old dataframe indices
     return onetypedf
 
 def get_unique_items(df, col):
@@ -31,28 +32,29 @@ def get_unique_items(df, col):
     Returns:
         itemlist {list or pd.DataFrame} -- List of unique items in col or unique combinations of columns
     """
-    itemlist = df[col].drop_duplicates()
+    if type(col) == str: #if only one column given
+        itemlist = list(df[col].drop_duplicates()) #unique items in given column
+    else: #if multiple columns given
+        itemlist = df[col].drop_duplicates() #unique combinations of given columns
     return itemlist
 
-def top_n_popular(df, typename, colnames, typecolname='Type', idcolname='Beer_ID', reviewcolname='Mean_Review', n=10):
-    """Returns the top n most popular items in a dataset given a specific value of the type column.
+def top_n_popular(df, colnames, idcolname='Beer_ID', reviewcolname='Mean_Review', n=10):
+    """Returns the top n most popular items in a dataset
 
     Args:
-        df {pd.DataFrame} -- Full dataframe
-        typename {str} -- specified value of type column 
+        df {pd.DataFrame} -- Full dataframe 
         colnames {list} -- list of column names needed to in the top10df
-        typecolname {str} -- column name for type (default: {'Type'})
         idcolname {str} -- column name for item id (default: {'Beer_ID'})
         reviewcolname {str} -- column name for reviews (default: {'Mean_Review'})
         n {int} -- number of most popular items to return
     Returns:
         top10df {pd.DataFrame} -- DF showing the rows corresponding to the top n items, with review and profile name dropped.
     """
-    df_onetype = filter_data(df, typename, typecolname) #df filtered by value in type column
-    df_groupedbyID = df_onetype.groupby([idcolname]).mean() #df grouped by item id, averaging reviews
+    df_groupedbyID = df.groupby([idcolname]).mean() #df grouped by item id, averaging reviews
     df_groupedbyID = df_groupedbyID.sort_values(reviewcolname, ascending=False) #sort df by review, descending
-    top = df_groupedbyID.index[0:n].values.tolist() #find index of top 10 items
-    topdf = get_unique_items(df_onetype[df_onetype[idcolname].isin(top)], colnames) #df containing the top 10 items
+    top = df_groupedbyID.index[0:n].values.tolist() #find index of top n items
+    topdf = get_unique_items(df[df[idcolname].isin(top)], colnames) #df containing the top n items
+    topdf = topdf.reset_index(drop=True)
     return topdf
 
 
@@ -125,7 +127,7 @@ def user_rows_combination_df(combdf, idlist, reviewcolname='Mean_Review', idcoln
     return final_user_rows, user_idlist
 
 
-def build_trainset(df, user_rows=None, colnames=None, rating_scale=(1,5)):
+def build_trainset(df, user_rows=None, colnames=None):
     """Create a training set for a collaborative filtering algorithm using scikit surprise
     
     Arguments:
@@ -141,7 +143,7 @@ def build_trainset(df, user_rows=None, colnames=None, rating_scale=(1,5)):
         train = df[colnames]
     else:
         train = df
-    reader = Reader(line_format='user item rating', rating_scale=rating_scale)
+    reader = Reader(line_format='user item rating')
     if user_rows is not None:
         trainset_load = Dataset.load_from_df(pd.concat([train, user_rows]), reader)
     else:
@@ -166,7 +168,7 @@ def build_testset(df, reviewcolname='Mean_Review', idcolname='Beer_ID', usercoln
     logger.info('Testset built.')
     return testset
 
-def create_KNNmodel(trainset, k_tuned=50, min_k_tuned=5, user_based_tuned=True, seed=12345):
+def create_KNNmodel(trainset, k=50, min_k=5, user_based=True, random_state=12345):
     """Train the KNN model given a training set and model parameters
     
     Arguments:
@@ -177,9 +179,9 @@ def create_KNNmodel(trainset, k_tuned=50, min_k_tuned=5, user_based_tuned=True, 
         seed {int} -- random seed (default: {12345})
 
     Returns:
-        model {model} -- trained model object
+        model {surprise.prediction_algorithms.knns.KNNBasic} -- trained model object
     """
-    model = KNNBasic(k=k_tuned, min_k=min_k_tuned, user_based=user_based_tuned, random_state=seed)
+    model = KNNBasic(k=k, min_k=min_k, user_based=user_based, random_state=random_state)
     logger.info('Model built.')
     model.fit(trainset)
 
@@ -201,8 +203,8 @@ def get_top_n(predictions, toptenlist=None, n=10):
     top_n = defaultdict(list)
     if toptenlist is not None:
         for uid, iid, true_r, est, _ in predictions:
-            if iid in toptenlist.values:
-                print('skipped item')
+            if iid in toptenlist:
+                logger.info('Skipped item due to presence in toptenlist.')
             else:
                 top_n[uid].append((iid, est))
     else:
@@ -254,8 +256,8 @@ def topten_fromdata(data, i, config):
     """
     typedata = filter_data(data, i, **config['filter_data'])
     itemlist = get_unique_items(typedata, **config['get_unique_items'])
-    top10df = top_n_popular(typedata, i, **config['top_ten_popular'])
-    toptenlist = get_unique_items(top10df, **config['idcolname'])
+    top10df = top_n_popular(typedata, i, **config['top_n_popular'])
+    toptenlist = get_unique_items(top10df, config['idcolname'])
 
     return typedata, itemlist, top10df, toptenlist
 
