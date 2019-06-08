@@ -1,0 +1,101 @@
+Beer_ID,Beer_Name,ABV,Type,Style,Brewery
+47658,Founders CBS Imperial Stout,10.6,Stout,American Double / Imperial Stout,Founders Brewing Company
+56812,Marshal Zhukov's Imperial Stout - Zhukov's Final Push,11.5,Stout,Russian Imperial Stout,Cigar City Brewing
+54035,AleSmith Speedway Stout - Kopi Luwak,12.0,Stout,American Double / Imperial Stout,AleSmith Brewing Company
+62397,Rare Bourbon County Stout,13.0,Stout,American Double / Imperial Stout,Goose Island Beer Co.
+63649,Rare D.O.S.,,Stout,American Double / Imperial Stout,Peg's Cantina & Brewpub / Cycle Brewing
+42664,Kaggen! Stormaktsporter,10.0,Stout,Russian Imperial Stout,Närke Kulturbryggeri AB
+47200,Stormaktsporter,9.0,Stout,Russian Imperial Stout,Närke Kulturbryggeri AB
+30184,Oak Aged Dark Lord Imperial Stout,13.0,Stout,Russian Imperial Stout,Three Floyds Brewing Co. & Brewpub
+42349,Vanilla Bean Aged Dark Lord,13.0,Stout,Russian Imperial Stout,Three Floyds Brewing Co. & Brewpub
+34420,The Abyss,11.0,Stout,American Double / Imperial Stout,Deschutes Brewery
+48450,AleSmith Decadence 2007 Imperial Porter Barrel Aged,10.0,Porter,American Porter,AleSmith Brewing Company
+35015,Victory At Sea (Barrel Aged) Imperial Porter,12.2,Porter,American Porter,Ballast Point Brewing Company
+5752,Stone 6th Anniversary Porter,8.0,Porter,Baltic Porter,Stone Brewing Co.
+72579,Barrel Aged Ken Schmidt/Maui/Stone Kona Coffee Macadamia Coconut Porter,8.5,Porter,American Porter,Stone Brewing Co.
+29219,Who's Your Daddy? Bourbon Barrel-Aged Imperial Porter,,Porter,American Porter,Tyranena Brewing Company
+13739,Porter,6.1,Porter,American Porter,Russian River Brewing Company
+62761,Maple Bacon Coffee Porter,6.3,Porter,American Porter,The Funky Buddha Lounge & Brewery
+35702,Oak-Aged Imperial Chocolate Pumpkin Porter,7.8,Porter,American Porter,Midnight Sun Brewing Co.
+75502,Birth Of Tragedy,11.0,Porter,American Porter,Hill Farmstead Brewery
+61062,Everett Robust Porter,7.5,Porter,American Porter,Hill Farmstead Brewery
+65472,Nickel Bag - O'Brien's 17th Anniversary,10.0,IPA,American Double / Imperial IPA,Port Brewing Company / Pizza Port
+56082,Citra DIPA,8.0,IPA,American Double / Imperial IPA,Kern River Brewing Company
+16814,Heady Topper,8.0,IPA,American Double / Imperial IPA,The Alchemist
+64545,Double Sunshine IPA,8.0,IPA,American Double / Imperial IPA,Lawson's Finest Liquids
+66444,Red Racer Imperial IPA,9.0,IPA,American Double / Imperial IPA,Central City Brewing
+7971,Pliny The Elder,8.0,IPA,American Double / Imperial IPA,Russian River Brewing Company
+21690,Pliny The Younger,11.0,IPA,American Double / Imperial IPA,Russian River Brewing Company
+16940,India Pale Ale (Dry Hopped / Bottleworks),7.0,IPA,American IPA,LaConner Brewing Company
+857,Trappist Westvleteren 8,8.0,IPA,Dubbel,Brouwerij Westvleteren (Sint-Sixtusabdij van Westvleteren)
+67760,Galaxy Imperial Single Hop IPA,8.0,IPA,American Double / Imperial IPA,Hill Farmstead Brewery
+8626,Southampton Berliner Weisse,2.0,Wheat Ale,Berliner Weissbier,Southampton Publick House
+4907,Solstice D'ete,5.9,Wheat Ale,Berliner Weissbier,Brasserie Dieu Du Ciel
+3995,Andechser Weissbier Hefetrüb,5.5,Wheat Ale,Hefeweizen,Klosterbrauerei Andechs
+37586,Dancing Man Wheat,7.2,Wheat Ale,Hefeweizen,New Glarus Brewing Company
+808,Weihenstephaner Hefeweissbier Dunkel,5.3,Wheat Ale,Dunkelweizen,Bayerische Staatsbrauerei Weihenstephan
+731,Weihenstephaner Hefeweissbier,5.4,Wheat Ale,Hefeweizen,Bayerische Staatsbrauerei Weihenstephan
+763,Schneider Weisse Weizenhell (Hefeweizen),4.9,Wheat Ale,Hefeweizen,Weisses Bräuhaus G. Schneider & Sohn GmbH
+9478,Gumballhead,4.5,Wheat Ale,American Pale Wheat Ale,Three Floyds Brewing Co. & Brewpub
+27625,Drunk Monk Hefeweizen,5.5,Wheat Ale,Hefeweizen,Three Floyds Brewing Co. & Brewpub
+1062,Live Oak HefeWeizen,5.2,Wheat Ale,Hefeweizen,Live Oak Brewing Company
+12165,Columbus Pale Ale,6.0,Pale Ale,American Pale Ale (APA),Minneapolis Town Hall Brewery
+28551,Simcoe Pale Ale,5.9,Pale Ale,American Pale Ale (APA),Minneapolis Town Hall Brewery
+15881,Tröegs Nugget Nectar,7.5,Pale Ale,American Amber / Red Ale,Tröegs Brewing Company
+58610,Hoppy Birthday,5.25,Pale Ale,American Pale Ale (APA),Alpine Beer Company
+19439,Parking Violation,5.5,Pale Ale,American Pale Ale (APA),Russian River Brewing Company
+71883,Cuvee Three,7.0,Pale Ale,Saison / Farmhouse Ale,Redbud Brewing Company
+64228,Zombie Dust,6.2,Pale Ale,American Pale Ale (APA),Three Floyds Brewing Co. & Brewpub
+5057,Fantôme Saison,8.0,Pale Ale,Saison / Farmhouse Ale,Brasserie Fantôme
+72100,Civil Disobedience #1,7.0,Pale Ale,Saison / Farmhouse Ale,Hill Farmstead Brewery
+68354,E.,7.0,Pale Ale,Saison / Farmhouse Ale,Hill Farmstead Brewery
+36316,Cantillon Blåbær Lambik,5.0,Sour,Lambic - Fruit,Brasserie Cantillon
+44934,Black Cherry Bomb,,Sour,American Wild Ale,Bullfrog Brewery
+23413,Geuze Cuvée J&J (Joost En Jessie) Blauw (Blue),6.5,Sour,Gueuze,Brouwerij Drie Fonteinen
+70356,Armand'4 Oude Geuze Zomer (Summer),6.0,Sour,Gueuze,Brouwerij Drie Fonteinen
+73627,Armand'4 Oude Geuze Herfst (Autumn),6.0,Sour,Gueuze,Brouwerij Drie Fonteinen
+68548,Armand'4 Oude Geuze Lente (Spring),6.0,Sour,Gueuze,Brouwerij Drie Fonteinen
+45957,Veritas 004,8.0,Sour,American Wild Ale,The Lost Abbey
+44112,Yellow Bus,7.0,Sour,American Wild Ale,The Lost Abbey
+44910,Dirty Horse,7.0,Sour,Lambic - Unblended,De Struise Brouwers
+41928,Deviation - Bottleworks 9th Anniversary,6.83,Sour,American Wild Ale,Russian River Brewing Company
+13935,The Mother Of All Beers (Quadrupel),10.0,Strong Ale,Quadrupel (Quad),Port Brewing Company / Pizza Port
+1640,Samuel Adams Millennium,21.0,Strong Ale,American Strong Ale,Boston Beer Company (Samuel Adams)
+61100,King Henry,13.4,Strong Ale,English Barleywine,Goose Island Beer Co.
+36567,Wooden Hell,9.5,Strong Ale,English Barleywine,Flossmoor Station Restaurant & Brewery
+20767,Adam From The Wood,12.0,Strong Ale,Old Ale,Hair of the Dog Brewing Company / Brewery and Tasting Room
+35197,Dave,29.0,Strong Ale,English Barleywine,Hair of the Dog Brewing Company / Brewery and Tasting Room
+37114,Old Stock Cellar Reserve (Aged In Brandy Barrels),14.7,Strong Ale,Old Ale,North Coast Brewing Co.
+7289,De Dolle Stille Nacht Special Reserva 2000,12.0,Strong Ale,Belgian Strong Dark Ale,Brouwerij De Dolle Brouwers
+24273,M Belgian-Style Barleywine,11.6,Strong Ale,American Barleywine,Midnight Sun Brewing Co.
+1545,Trappist Westvleteren 12,10.2,Strong Ale,Quadrupel (Quad),Brouwerij Westvleteren (Sint-Sixtusabdij van Westvleteren)
+51557,Humulus Lager,7.2,Pilsner,American Double / Imperial Pilsner,The Bruery
+71820,Hoponius Union,6.7,Pilsner,Dortmunder / Export Lager,Jack's Abby Brewing
+44942,Unplugged Bohemian Lager,,Pilsner,Czech Pilsener,New Glarus Brewing Company
+16659,Spring Brew 2004,8.5,Pilsner,American Double / Imperial Pilsner,Old Dominion Brewing Company
+21968,Spring Brew 2005,8.5,Pilsner,American Double / Imperial Pilsner,Old Dominion Brewing Company
+21625,Mönchsambacher Lager,5.5,Pilsner,Keller Bier / Zwickel Bier,Brauerei Zehendner GmbH
+28813,Neumarkter Lammsbräu Pilsner,4.8,Pilsner,German Pilsener,Neumarkter Lammsbräu
+13415,Lunatic Lager,5.0,Pilsner,Dortmunder / Export Lager,Moonlight Brewing Company
+22173,Reality Czeck,4.8,Pilsner,Czech Pilsener,Moonlight Brewing Company
+28157,Braumeister Pils - Saaz,5.7,Pilsner,Czech Pilsener,Victory Brewing Company
+1129,AleSmith Weizenbock,8.6,Dark Lager,Weizenbock,AleSmith Brewing Company
+15537,Ramstein Winter Wheat Eisbock,11.5,Dark Lager,Eisbock,High Point Brewing Company
+2899,Andechser Doppelbock Dunkel,7.1,Dark Lager,Doppelbock,Klosterbrauerei Andechs
+6614,U Fleku Dark Lager,4.5,Dark Lager,Euro Dark Lager,U Fleků Pivovaru a Restauraci
+224,Schneider Aventinus,8.2,Dark Lager,Weizenbock,Weisses Bräuhaus G. Schneider & Sohn GmbH
+11784,Kuhnhenn Raspberry Eisbock,13.5,Dark Lager,Eisbock,Kuhnhenn Brewing Company
+131,Ayinger Celebrator Doppelbock,6.7,Dark Lager,Doppelbock,Privatbrauerei Franz Inselkammer KG / Brauerei Aying
+30120,Brooklyn Blonde Bock,7.7,Dark Lager,Maibock / Helles Bock,Brooklyn Brewery
+2164,Brooklyner Weissebock,8.2,Dark Lager,Weizenbock,Brooklyn Brewery
+48597,Double Vision Doppelbock,8.0,Dark Lager,Doppelbock,Grand Teton Brewing Co.
+69894,Founders Cashew Mountain Brown,10.0,Brown Ale,American Brown Ale,Founders Brewing Company
+48113,Extremely Naughty Goose,8.6,Brown Ale,American Brown Ale,Goose Island Beer Co.
+6420,Schumacher Alt,4.6,Brown Ale,Altbier,Brauerei Schumacher
+28165,Bender,5.1,Brown Ale,American Brown Ale,Surly Brewing Company
+58120,Moe's Bender,5.52,Brown Ale,American Brown Ale,Surly Brewing Company
+44410,ALTerior Motive,6.3,Brown Ale,Altbier,COAST Brewing Company
+39239,Rye Knot Brown,6.1,Brown Ale,American Brown Ale,COAST Brewing Company
+12716,Im Füchschen Alt,4.5,Brown Ale,Altbier,Brauerei Im Füchschen
+69935,No Crusts,6.0,Brown Ale,American Brown Ale,The Funky Buddha Lounge & Brewery
+6406,Original Schlüssel Alt,5.0,Brown Ale,Altbier,Hausbrauerei Zum Schlüssel
