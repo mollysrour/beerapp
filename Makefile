@@ -4,9 +4,9 @@ data/beer_reviews.csv: src/acquire_data.py src/config.yml
 raw_data: data/beer_reviews.csv
 
 data/cleaned_beer_reviews.csv: data/beer_reviews.csv src/clean_data.py src/config.yml 
-	python src/clean_data.py --config=src/config.yml --input=‘data/beer_reviews.csv' --output=‘data/cleaned_beer_reviews.csv'
+	python src/clean_data.py --config=src/config.yml --input='data/beer_reviews.csv' --output='data/cleaned_beer_reviews.csv'
 
-cleaned_data: cleaned_beer_reviews.csv
+cleaned_data: data/cleaned_beer_reviews.csv
 
 preds.csv: data/cleaned_beer_reviews.csv src/train_model.py src/config.yml
 	python src/train_model.py --config=src/config.yml --input='data/cleaned_beer_reviews.csv' --output_preds='data/preds.csv' --output_top10rows='data/top10.csv' --output_combinations='data/combinations.csv'
