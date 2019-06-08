@@ -149,7 +149,6 @@ def build_trainset(df, user_rows=None, colnames=None):
     else:
         trainset_load = Dataset.load_from_df(train, reader)
     trainset = trainset_load.build_full_trainset()
-    logger.info('Trainset built.')
     return trainset
 
 def build_testset(df, reviewcolname='Mean_Review', idcolname='Beer_ID', usercolname='Reviewer'):
@@ -165,7 +164,6 @@ def build_testset(df, reviewcolname='Mean_Review', idcolname='Beer_ID', usercoln
         testset {list} -- list in test format that Surprise requires
     """
     testset = [(uid, iid, r) for (uid, iid, r) in zip(df[usercolname], df[idcolname], df[reviewcolname])]
-    logger.info('Testset built.')
     return testset
 
 def create_KNNmodel(trainset, k=50, min_k=5, user_based=True, random_state=12345):
@@ -264,7 +262,9 @@ def topten_fromdata(data, i, config):
 def onepred_fromdata(j, user_rows, toptenlist, typedata, config):
     userdata = filter_data(user_rows, j, **config['filter_data_user'])
     trainset = build_trainset(typedata, userdata, **config['build_trainset'])
+    logger.info('Trainset built.')
     testset = build_testset(userdata, **config['build_testset'])
+    logger.info('Testset built')
     model = create_KNNmodel(trainset, **config['create_KNNmodel'])
     preds = predictions(typedata, model, j, testset, toptenlist, **config['predictions'])
     preds['ID'] = j
@@ -306,10 +306,10 @@ if __name__ == "__main__":
     logger = logging.getLogger(__file__)
     parser = argparse.ArgumentParser(description="Add config.yml in args")
     parser.add_argument('--config', default='config.yml', help='config.yml')
-    parser.add_argument('--input', default='../data/cleaned_beer_reviews.csv', help='config.yml')
-    parser.add_argument('--output_preds', default='../data/preds.csv', help='config.yml')
-    parser.add_argument('--output_top10rows', default='../data/top10.csv', help='config.yml')
-    parser.add_argument('--output_combinations', default='../data/combinations.csv', help='config.yml')
+    parser.add_argument('--input', default='data/cleaned_beer_reviews.csv', help='config.yml')
+    parser.add_argument('--output_preds', default='data/preds.csv', help='config.yml')
+    parser.add_argument('--output_top10rows', default='data/top10.csv', help='config.yml')
+    parser.add_argument('--output_combinations', default='data/combinations.csv', help='config.yml')
     args = parser.parse_args()
 
     run_train(args)
