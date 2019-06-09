@@ -38,7 +38,7 @@
         <tbody>
            {% for beer in preds %}
               <tr>
-                  <td>{{beer.Pkey % 10 + 1}}</td>
+                  <td>{{beer.Pkey % 10}}</td>
                   <td>{{ beer.Beer_Name }}</td>
                   <td>{{ beer.ABV }}</td>
                   <td>{{ beer.Style }}</td>

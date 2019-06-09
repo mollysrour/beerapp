@@ -123,7 +123,7 @@ configure_db:
   
   rds:
     MYSQL_USER: "root"
-    MYSQL_PASSWORD: "A1d8a4m4!!"
+    MYSQL_PASSWORD: ""
     MYSQL_HOST: "mysql-nw-mollysrour-beer.cwtnz4pff46i.us-east-2.rds.amazonaws.com"
     MYSQL_PORT: '3306'
     MYSQL_DB: "msia423"
