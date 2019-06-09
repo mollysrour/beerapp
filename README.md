@@ -155,7 +155,7 @@ pip install -r requirements.txt
     
     ```
 
-2.  Set your RDS MYSQL environment variables by running the following commands, all must be in quotes
+2.  If you are using RDS, set your RDS MYSQL environment variables by running the following commands, all must be in quotes.
     ```bash
     export MYSQL_USER=""
     export MYSQL_PASSWORD=""
@@ -163,9 +163,15 @@ pip install -r requirements.txt
     export MYSQL_PORT=""
     
     ```
+    If you are NOT using RDS and are configuring the app locally, do NOT run the export commands above. Instead, run the following command with your SQLite database name attached. it must be in the following format: sqlite:///filepath . 
+    
+    ```bash
+    export SQLALCHEMY_DATABASE_URI=""
+    ```
+    
 ### 3. Data Pipeline
 
-Change the configurations in `src/config.yml` to your desired configureations.  The README in the src folder has explanations for the configurations.
+Change the configurations in `src/config.yml` to your desired configurations. Some main configurations to be changed are the AWS bucket and filepath configurations for the acquire_data script. The AWS_BUCKET is the name of your AWS bucket and the AWS_FILE_PATH is the file path within your bucket you would like the raw data to be landed. You must also change the database configurations in the YAML for the configure_db script to your RDS credentials or SQLite credentials, depending on what you are using. 
 
 Run  `make all`
 
