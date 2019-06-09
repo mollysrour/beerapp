@@ -13,19 +13,19 @@
   <div class="main">
     <br>
     <br>
-    <gulpheading>🍺Gulp!🍺</mainheading>
+    <gulpheading>🍺Gulp!🍺</gulpheading>
     <br>
     <br>
     <mainheading>The Beer Recommendation App</mainheading>
     <br>
     <br>
-    <typeheading>Let's check out some beers! You chose this type: {{beertype}}</mainheading>
+    <typeheading>Let's check out some beers! You chose this type: {{beertype}}</typeheading>
     <br>
     <br>
-    <beertext> Here are the top ten most popular beers for your chosen type. Pick two of them that you like or think you would like. </beertext>
-    <hr style="width:40%">
-    <table>
-        <thead font-size=20px;>
+    <beertext> Here are the top ten most popular beers for your chosen type. Pick two of them that you like or think you would like. 
+    <hr style="width:40%"> 
+    <table cellpadding="10" align="center">
+        <thead font-size=15px;>
            <tr>
               <th>Rank</th>
               <th>Beer Name</th>
@@ -36,7 +36,7 @@
            </tr>
         </thead>
 
-        <tbody>
+        <tbody font-size=15px;>
            {% for beer in listbeers %}
               <tr>
                   {% if beer.Pkey % 10 == 0 %}
@@ -54,7 +54,7 @@
      </table>
     <form class=inputs method=post name=userinput action="{{ url_for('get_results')}}">
     <p>
-      <div align="center">
+      <div style="display:block;">
         <select name="beerchoice1" id="beerchoice1" class="form-control unstyled">
             <option>
                 First Chosen Beer
@@ -69,28 +69,23 @@
             <option value="7" >8: {{listbeers[7].Beer_Name}}</option>
             <option value="8" >9: {{listbeers[8].Beer_Name}}</option>
             <option value="9" >10: {{listbeers[9].Beer_Name}}</option>
+        </select> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        <select name="beerchoice2" id="beerchoice2" class="form-control unstyled">
+            <option>
+                Second Chosen Beer
+            </option>
+            <option value="0" >1: {{listbeers[0].Beer_Name}}</option>
+            <option value="1" >2: {{listbeers[1].Beer_Name}}</option>
+            <option value="2" >3: {{listbeers[2].Beer_Name}}</option>
+            <option value="3" >4: {{listbeers[3].Beer_Name}}</option>
+            <option value="4" >5: {{listbeers[4].Beer_Name}}</option>
+            <option value="5" >6: {{listbeers[5].Beer_Name}}</option>
+            <option value="6" >7: {{listbeers[6].Beer_Name}}</option>
+            <option value="7" >8: {{listbeers[7].Beer_Name}}</option>
+            <option value="8" >9: {{listbeers[8].Beer_Name}}</option>
+            <option value="9" >10: {{listbeers[9].Beer_Name}}</option>
         </select>
-      </div>
-      <br>
-      <br>
-
-      <div align="center">
-            <select name="beerchoice2" id="beerchoice2" class="form-control unstyled">
-                <option>
-                    Second Chosen Beer
-                </option>
-                <option value="0" >1: {{listbeers[0].Beer_Name}}</option>
-                <option value="1" >2: {{listbeers[1].Beer_Name}}</option>
-                <option value="2" >3: {{listbeers[2].Beer_Name}}</option>
-                <option value="3" >4: {{listbeers[3].Beer_Name}}</option>
-                <option value="4" >5: {{listbeers[4].Beer_Name}}</option>
-                <option value="5" >6: {{listbeers[5].Beer_Name}}</option>
-                <option value="6" >7: {{listbeers[6].Beer_Name}}</option>
-                <option value="7" >8: {{listbeers[7].Beer_Name}}</option>
-                <option value="8" >9: {{listbeers[8].Beer_Name}}</option>
-                <option value="9" >10: {{listbeers[9].Beer_Name}}</option>
-            </select>
-          </div>
+        </div>
 
       <p align="center">
         <button type="submit" style="color:black;" > Recommend me some beer! </button> 

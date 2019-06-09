@@ -13,17 +13,18 @@
   <div class="main">
     <br>
     <br>
-    <gulpheading>🍺Gulp!🍺</mainheading>
+    <gulpheading>🍺Gulp!🍺</gulpheading>
     <br>
     <br>
     <mainheading>The Beer Recommendation App</mainheading>
     <br>
     <br>
-    <typeheading>Your beer recommendations for your chosen type: {{beertype}}.</mainheading>
+    <typeheading>Your beer recommendations for your chosen type: {{beertype}}.</typeheading>
     <br>
     <br>
     <hr style="width:40%">
-    <table>
+    <beertext>
+    <table cellpadding="10" align="center">
         <thead font-size=20px;>
            <tr>
               <th>Rank</th>
@@ -38,7 +39,11 @@
         <tbody>
            {% for beer in preds %}
               <tr>
-                  <td>{{beer.Pkey % 10}}</td>
+                  {% if beer.Pkey % 10 == 0 %}
+                  <td> 10</td>
+                  {% else %}
+                  <td>{{beer.Pkey % 10}} <br></td>
+                  {% endif %}
                   <td>{{ beer.Beer_Name }}</td>
                   <td>{{ beer.ABV }}</td>
                   <td>{{ beer.Style }}</td>
