@@ -175,6 +175,7 @@ def configure(args):
 
     if args.input_preds is not None:
         pred_data = pd.read_csv(args.input_preds)
+        pred_data = pred_data.fillna(value=0)
         try:
             persist_userpredictions(session, pred_data)
             session.commit()
@@ -191,6 +192,7 @@ def configure(args):
     
     if args.input_top10rows is not None:
         top10_data = pd.read_csv(args.input_top10rows)
+        top10_data = top10_data.fillna(value=0)
         try:
             persist_top10beers(session, top10_data)
             session.commit()
@@ -207,6 +209,7 @@ def configure(args):
     
     if args.input_combinations is not None:
         combinations_data = pd.read_csv(args.input_combinations)
+        combinations_data = combinations_data.fillna(value=0)
         try:
             persist_usercombinations(session, combinations_data)
             session.commit()
