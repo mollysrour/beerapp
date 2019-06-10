@@ -9,7 +9,7 @@
   * [1. Set up environment](#1-set-up-environment)
     + [With `virtualenv` and `pip`](#with-virtualenv-and-pip)
     + [With `conda`](#with-conda)
-  * [2. Collect the data from S3](#2)
+  * [2. Collect the data from S3](#2-configure-aws-credentials-for-s3-and-rds)
   * [3. Initialize the database](#3-initialize-the-database)
   
 
