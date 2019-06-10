@@ -173,11 +173,17 @@ pip install -r requirements.txt
   ```
     
 ### 3. Data Pipeline
+Change the configurations in `src/config.yml` to your desired configurations. Mandatory changes include:
 
-Change the configurations in `src/config.yml` to your desired configurations. Some main configurations to be changed are the AWS bucket and filepath configurations for the acquire_data script. The AWS_BUCKET is the name of your AWS bucket and the AWS_FILE_PATH is the file path within your bucket you would like the raw data to be landed. You must also change the database configurations in the YAML for the configure_db script to your RDS credentials or SQLite credentials, depending on what you are using. 
+  Within the acquire_data section of the config, change AWS_BUCKET to the name of your AWS bucket, change AWS_FILE_PATH to the file path within your bucket that you would like the raw data to be landed, and change localfilepath to the filepath in your local folder you would like the raw data to be landed.
+  Within the configure_db section of the config, if you are configuring the app locally, you must change SQLITELOCALENGINE to the appropriate path for the SQLite database. This MUST be of the format 'sqlite:///filepath/databasename.db' . For example, if you are in your beerapp folder and wish the db to be stored in the data folder as beers.db, then the appropriate format of the SQLITELOCALENGINE is 'sqlite:///data/beers.db'.  If you are using RDS, you must configure MYSQL_USER, MYSQL_PASSWORD, MYSQL_HOST, MYSQL_PORT, MYSQL_DB, and MYSQL_SQLTYPE to your appropriate RDS settings.
 
+Go into the makefile and change the data paths appropriately to where you would like the data to be stored.
+   
 Run  `make all`
 
 ### 4. Launch App
+
+`flask_config.py` holds the configurations for the Flask app. If you are configuring the app locally, you must change the SQLALCHEMY_DATABASE_URI to the same path that you specified in SQLITELOCALENGINE in the config for your database. If you are configuring the app using RDS, you should not need to change anything in flask_config.py since the os environment variables are used.  HOWEVER, if your database is not called msia423 and your connection type is not mysql+pymysql, you must change those to their appropriate settings within flask_config.py.
 
 Run `python application.py`
