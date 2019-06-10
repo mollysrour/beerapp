@@ -9,7 +9,7 @@
   * [1. Set up environment](#1-set-up-environment)
     + [With `virtualenv` and `pip`](#with-virtualenv-and-pip)
     + [With `conda`](#with-conda)
-  * [2. Collect the data from S3](#2-collect-data)
+  * [2. Collect the data from S3](#2-Configure AWS Credentials for S3 and RDS)
   * [3. Initialize the database](#3-initialize-the-database)
   
 
@@ -122,8 +122,7 @@ python get-pip.py
 
 ### 1. Set up environment 
 
-The `requirements.txt` file contains the packages required to run the model code. An environment can be set up in two ways. See bottom of README for exploratory data analysis environment setup. 
-
+The `requirements.txt` file contains the packages required to run the model code. An environment can be set up in two ways. 
 
 #### With `virtualenv`
 
@@ -148,26 +147,30 @@ pip install -r requirements.txt
 
 ### 2. Configure AWS Credentials for S3 and RDS
 
-1.  Set your AWS environment variables by running the following commands, all must be in quotes:
+1.  Set your AWS environment variables by running the following commands, entering your AWS key and secret key, all must be in quotes:
     ```bash
     export AWS_KEY_ID=""
     export AWS_ACCESS_KEY=""
     
     ```
 
-2.  If you are using RDS, set your RDS MYSQL environment variables by running the following commands, all must be in quotes.
+2.  If you are using RDS, set your RDS MYSQL environment variables by running the following commands, entering your relevant RDS info, all must be in quotes:
     ```bash
     export MYSQL_USER=""
     export MYSQL_PASSWORD=""
     export MYSQL_HOST=""
     export MYSQL_PORT=""
-    
     ```
-    If you are NOT using RDS and are configuring the app locally, do NOT run the export commands above. Instead, run the following command with your SQLite database name attached. it must be in the following format: sqlite:///filepath . 
-    
-    ```bash
-    export SQLALCHEMY_DATABASE_URI=""
-    ```
+  Additionally, if you are using RDS, also run this command:
+  
+  ```bash
+  export localorRDS="RDS"
+  ```
+  If you are NOT using RDS and are configuring the app locally, run the following command:
+  
+  ```bash
+  export localorRDS="local"
+  ```
     
 ### 3. Data Pipeline
 
