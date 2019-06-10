@@ -4,7 +4,6 @@
 
 - [Project Charter](#project-charter)
 - [Repo structure](#repo-structure)
-- [Documentation](#documentation)
 - [Running the application](#running-the-application)
   * [1. Set up environment](#1-set-up-environment)
     + [With `virtualenv` and `pip`](#with-virtualenv-and-pip)
