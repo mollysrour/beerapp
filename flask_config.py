@@ -1,4 +1,5 @@
 import os
+import yaml
 DEBUG = True
 APP_NAME = "beerapp"
 
@@ -12,10 +13,10 @@ password = os.environ.get('MYSQL_PASSWORD')
 port = os.environ.get('MYSQL_PORT')
 DATABASE_NAME = 'msia423' 
 host = os.environ.get('MYSQL_HOST')
-if host is None:
+localorRDS = os.environ.get('localorRDS')
+if localorRDS == 'local':
     host = "8000"
-if user is None:
     SQLALCHEMY_DATABASE_URI = 'sqlite:///data/beers.db' 
-else:
+elif localorRDS == 'RDS':
     SQLALCHEMY_DATABASE_URI = "{}://{}:{}@{}:{}/{}".\
     format(conn_type, user, password, host, port, DATABASE_NAME)
