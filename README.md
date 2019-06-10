@@ -95,14 +95,28 @@ Business value: Users can find where a beer is that has been recommended. 8 poin
 ```
 ├── README.md                         <- You are here
 ├── data                              <- Folder that contains data used or generated. 
+├── deliverables                      <- Folder that contains deliverables for AVC project
 ├── models                            <- Trained model objects (TMOs), model predictions, and/or model summaries
 ├── src                               <- Source data for the project 
 │   ├── config.yml                    <- Configuration file for model pipeline
-|   ├── acquire_data.py               <- Script for getting source data from my S3 bucket and landing it in your S3 bucket, then landing |                                           it locally
+|   ├── acquire_data.py               <- Script for getting data from my S3 bucket to your S3 bucket and finally to your local path
 |   ├── clean_data.py                 <- Script for cleaning data
-|   ├── train_model.py                <- Script for training model on 450 different test users and creating prediction data frame, top 10 beers for each beer type, and user com
-│   ├── createdb.py                   <- Script for creating db in RDS or Sqlite and adding rows
+|   ├── train_model.py                <- Script for training model on 450 different test users and creating predictions, top 10                                                 beers for each beer type, and test user combinations
+|   ├── score_model.py                <- Script for scoring model performance on a subset of the data
+│   ├── configure_db.py               <- Script for creating db in RDS or Sqlite and adding rows from the three tables
 │   ├── getdata_s3.py                 <- Script for getting source data from my S3 bucket and landing it in your S3 bucket
+│   ├── test_clean_data.py            <- Unit tests of the clean_data script
+│   ├── test_train_model.py           <- Unit tests of the train_model script
+│   ├── test_score_model.py           <- Unit tests of the score_model script
+├── static                            <- Static CSS folder
+│   ├── basic.css                     <- CSS for the app
+├── templates                         <- HTML templates for the app
+│   ├── first.html                    <- HTML Landing page for the app, user chooses type
+│   ├── recommender.html              <- HTML page where user inputs beers they like from top ten list
+│   ├── results.html                  <- HTML page where user receives results
+├── application.py                    <- Script for running the Flask application
+├── flask_config.py                   <- Configurations for Flask app
+├── Makefile                          <- File to link together and create necessary files, models, etc 
 ├── requirements.txt                  <- Python package dependencies 
 ```
 This project structure was partially influenced by the [Cookiecutter Data Science project](https://drivendata.github.io/cookiecutter-data-science/).
