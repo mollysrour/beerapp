@@ -101,7 +101,7 @@ Business value: Users can find where a beer is that has been recommended. 8 poin
 │   ├── config.yml                    <- Configuration file for model pipeline
 |   ├── acquire_data.py               <- Script for getting data from my S3 bucket to your S3 bucket and finally to your local path
 |   ├── clean_data.py                 <- Script for cleaning data
-|   ├── train_model.py                <- Script for training model on 450 different test users and creating predictions, top 10                                                 beers for each beer type, and test user combinations
+|   ├── train_model.py                <- Script for training model on 450 different test users and creating predictions, top 10 beers for each beer type, and test user combinations
 |   ├── score_model.py                <- Script for scoring model performance on a subset of the data
 │   ├── configure_db.py               <- Script for creating db in RDS or Sqlite and adding rows from the three tables
 │   ├── getdata_s3.py                 <- Script for getting source data from my S3 bucket and landing it in your S3 bucket
@@ -171,7 +171,7 @@ pip install numpy
 Then run thic command:
 
 ```bash
-pip install requirements.txt
+pip install -r requirements.txt
 ```
 
 ### 2. Configure AWS Credentials for S3 and RDS
