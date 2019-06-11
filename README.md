@@ -147,16 +147,31 @@ virtualenv beerapp
 
 source beerapp/bin/activate
 
-pip install -r requirements.txt
-
 ```
 #### With `conda`
 
 ```bash
 conda create -n beerapp python=3.7
 conda activate beerapp
-pip install -r requirements.txt
 
+```
+
+Then you must install the required python packages, which are stored in the requirements.txt file. 
+
+However, due to an issue with the surprise package, you will need to install numpy first separately.
+
+Documented here: https://github.com/NicolasHug/Surprise/issues/188
+
+Please run this first:
+
+```bash
+pip install numpy
+```
+
+Then run thic command:
+
+```bash
+pip install requirements.txt
 ```
 
 ### 2. Configure AWS Credentials for S3 and RDS
