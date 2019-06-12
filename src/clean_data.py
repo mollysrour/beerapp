@@ -16,8 +16,9 @@ def create_mean_column(df, columns, name='mean_col'):
         df {pd.DataFrame} - dataframe with new column added
     """
     try:
-        cols = df.loc[: ,columns] #just the columns of interest
+        cols = df[columns] #just the columns of interest
     except:
+        raise KeyError("Incorrect column names.")
         logger.error('Column names are incorrect. Re-enter column names.')
     values = list(cols.mean(axis=1).values) #mean value across these columns of interest
     df.loc[:, name] = values #creates new column with specified name with values as the mean values from above
@@ -34,7 +35,11 @@ def omit_values(df, column, valuelist):
     Returns:
         df {pd.DataFrame} - dataframe with rows omitted
     """
-    df = df[~df[column].isin(valuelist)] #Only keep rows with column values NOT in valuelist
+    try:
+        df = df[~df[column].isin(valuelist)] #Only keep rows with column values NOT in valuelist
+    except: 
+        raise KeyError('Incorrect column name.')
+        logger.error('Column name is incorrect. Re-enter column name.')
     df = df.reset_index(drop=True) #Remove prior dataframe indexes
     return df
 
@@ -53,7 +58,11 @@ def aggregated_category_column(df, narrowcolumn, valuedict, broadcategory='beer_
         df {pd.DataFrame} - dataframe with new column added
     """ 
     for key, value in valuedict.items(): #iterating over key/value pair in valuedict
-        df.loc[df[narrowcolumn].isin(value), broadcategory] = key #assigning key to broadcategory column for rows with values in narrow column
+        try:
+            df.loc[df[narrowcolumn].isin(value), broadcategory] = key #assigning key to broadcategory column for rows with values in narrow column
+        except:
+            raise KeyError('Either your narrowcolumn anme or your valuedict has incorrect values.')
+            logger.error('Column name or value dictionary has been entered incorrectly. Please re-enter.')
     return df
 
 def select_rename_features(df, oldnames, newnames):
@@ -71,6 +80,7 @@ def select_rename_features(df, oldnames, newnames):
         for i in range(len(oldnames)):
             df = df.rename(columns={oldnames[i]: newnames[i]}) #rename columns
     else:
+        raise ValueError('Length mismatch.')
         logger.error('List of features to be renamed must have same length as list of new names')
     return df[newnames] #select only renamed columns
 
@@ -86,8 +96,16 @@ def refine_data(df, idcolname='Beer_ID', usercolname='Reviewer', n=15):
     Returns:
         df{pd.DataFrame} -- filtered Data Frame
     """
-    df_grouped = df.groupby(idcolname).count() #group by idcolname, count number of reviews
-    df_grouped =  df_grouped[df_grouped[usercolname] >=n] #only include rows with number of reviews > n
+    try:
+        df_grouped = df.groupby(idcolname).count() #group by idcolname, count number of reviews
+    except:
+        raise KeyError('Incorrect ID column name')
+        logger.error('Please re-enter ID column name.')
+    try:
+        df_grouped =  df_grouped[df_grouped[usercolname] >=n] #only include rows with number of reviews > n
+    except:
+        raise KeyError('Incorrect User Column Name')
+        logger.error("Please re-enter user column name.")
     df = df[df[idcolname].isin(df_grouped.index)] #select rows specified from df grouped
     df = df.reset_index(drop=True) #reset index to remove old df indexes
     return df
@@ -129,8 +147,8 @@ if __name__ == "__main__":
     logger = logging.getLogger(__file__)
     parser = argparse.ArgumentParser(description="Add config.yml in args")
     parser.add_argument('--config', default='config.yml')
-    parser.add_argument('--input', default='../data/beer_reviews.csv')
-    parser.add_argument('--output', default='../data/cleaned_beer_reviews.csv')
+    parser.add_argument('--input', default='data/beer_reviews.csv')
+    parser.add_argument('--output', default='data/cleaned_beer_reviews.csv')
     args = parser.parse_args()
     
     run_clean(args)
