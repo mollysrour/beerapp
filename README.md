@@ -1,4 +1,4 @@
-# Beer Recommender App!
+# Gulp! The Beer Recommendation App
 
 <!-- toc -->
 
