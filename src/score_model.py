@@ -2,7 +2,7 @@ from surprise import Dataset, Reader, KNNBasic
 from surprise.model_selection import train_test_split, KFold
 from collections import defaultdict
 from itertools import combinations
-import src.train_model as tm 
+import train_model as tm 
 import pandas as pd
 import numpy as np
 import argparse
@@ -48,7 +48,6 @@ def data_model_forcrossvalidation(data, config_train):
     """
     t_configs = config_train['build_trainset']
     data = data[t_configs['colnames']]
-    print(t_configs['rating_scale'])
     reader = Reader()
     data = Dataset.load_from_df(data, reader)
     model = KNNBasic(**config_train['create_KNNmodel'])
