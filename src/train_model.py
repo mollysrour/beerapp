@@ -53,9 +53,13 @@ def top_n_popular(df, colnames, idcolname='Beer_ID', reviewcolname='Mean_Review'
     df_groupedbyID = df.groupby([idcolname]).mean() #df grouped by item id, averaging reviews
     df_groupedbyID = df_groupedbyID.sort_values(reviewcolname, ascending=False) #sort df by review, descending
     top = df_groupedbyID.index[0:n].values.tolist() #find index of top n items
-    topdf = get_unique_items(df[df[idcolname].isin(top)], colnames) #df containing the top n items
-    topdf = topdf.reset_index(drop=True)
-    return topdf
+    rank_index = pd.DataFrame(top) #store rank
+    rank_index.columns = ['Beer_ID'] #store rank
+    topdf = get_unique_items(df[df[idcolname].isin(top)], colnames) #df containing the top n items, unordered
+    rank_index = pd.DataFrame(top)
+    rank_index.columns = ['Beer_ID']
+    finaldf = pd.merge(rank_index, topdf, on='Beer_ID')
+    return finaldf
 
 
 def create_combinations(df, typename, n=2):
@@ -180,7 +184,6 @@ def create_KNNmodel(trainset, k=50, min_k=5, user_based=True, random_state=12345
         model {surprise.prediction_algorithms.knns.KNNBasic} -- trained model object
     """
     model = KNNBasic(k=k, min_k=min_k, user_based=user_based, random_state=random_state)
-    logger.info('Model built.')
     model.fit(trainset)
 
     return model
@@ -254,7 +257,7 @@ def topten_fromdata(data, i, config):
     """
     typedata = filter_data(data, i, **config['filter_data'])
     itemlist = get_unique_items(typedata, **config['get_unique_items'])
-    top10df = top_n_popular(typedata, i, **config['top_n_popular'])
+    top10df = top_n_popular(typedata, **config['top_n_popular'])
     toptenlist = get_unique_items(top10df, config['idcolname'])
 
     return typedata, itemlist, top10df, toptenlist
@@ -266,6 +269,7 @@ def onepred_fromdata(j, user_rows, toptenlist, typedata, config):
     testset = build_testset(userdata, **config['build_testset'])
     logger.info('Testset built')
     model = create_KNNmodel(trainset, **config['create_KNNmodel'])
+    logger.info('Model built.')
     preds = predictions(typedata, model, j, testset, toptenlist, **config['predictions'])
     preds['ID'] = j
     return preds
