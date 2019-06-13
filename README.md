@@ -166,8 +166,14 @@ Go into the makefile and change the data paths appropriately to where you would 
    
 Run  `make all`
 
+Make all runs the acquire_data, clean_data, train_model, score_model, AND configure_db scripts.  Only run this command once, because if you run it multiple times, it will duplicate the rows in the database. Make sure all your sqlite/rds configurations are properly exported and entered in the YAML before running this command.
+
 ### 4. Launch App
 
 `flask_config.py` holds the configurations for the Flask app. If you are configuring the app locally, you must change the SQLALCHEMY_DATABASE_URI to the same path that you specified in SQLITELOCALENGINE in the config for your database. If you are configuring the app using RDS, you should not need to change anything in flask_config.py since the os environment variables are used.  HOWEVER, if your database is not called msia423 and your connection type is not mysql+pymysql, you must change those to their appropriate settings within flask_config.py.
 
 Run `python application.py`
+
+### 5. Run Unit tests
+
+Run `py.test` to unit test this app. The test scripts are found in the src folder.
