@@ -193,6 +193,7 @@ def configure(args):
     if args.input_top10rows is not None:
         top10_data = pd.read_csv(args.input_top10rows)
         top10_data = top10_data.fillna(value=0)
+        print(top10_data)
         try:
             persist_top10beers(session, top10_data)
             session.commit()

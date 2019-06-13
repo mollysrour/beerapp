@@ -2,21 +2,27 @@ from surprise import Dataset, Reader, KNNBasic
 from surprise.model_selection import train_test_split, KFold
 from collections import defaultdict
 from itertools import combinations
-import train_model as tm 
+try:
+    import train_model as tm 
+except:
+    import src.train_model as tm
 import pandas as pd
 import numpy as np
 import argparse
 import logging
 import yaml
 
-def precision_recall_at_k(predictions, outputtxt = None, k=10, threshold=3):
+def precision_recall_at_k(predictions, k=10, threshold=3):
     """Returns average precision and recall at k metrics for each user.
     
     Arguments:
         predictions: {list of Prediction objects} -- The list of predictions, as returned by the test method of an algorithm.
-        outputtxt -- file path for text output -- (default: {None})
         k {int} -- number of metrics -- (default: {10})
         threshold {int} -- ratings threshold -- (default {3})
+    Returns:
+        Tuple consisting of:
+        precision {float} -- Average precision of the model
+        recall {float} -- Average recall of the model
     """
     user_est_true = defaultdict(list)
     for uid, _, true_r, est, _ in predictions:
@@ -64,6 +70,7 @@ def kfold_crossvalidation(data, model, folds=5, k=5, threshold=4):
         threshold {int} -- ratings threshold -- (default {3})
     
     Returns:
+        Tuple consisting of:
         average_precision {float} -- Average precision of the model
         average_recall {float} -- Average recall of the model
     """

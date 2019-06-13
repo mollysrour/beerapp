@@ -111,7 +111,7 @@ def refine_data(df, idcolname='Beer_ID', usercolname='Reviewer', n=15):
     return df
 
 def run_clean(args):
-    """Runs script to acquire data.
+    """Runs script to clean data.
     
     Arguments:
         args {argparse.Namespace} -- Script arguments, in this case, path to config file.

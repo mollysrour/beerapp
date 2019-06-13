@@ -59,7 +59,7 @@ clean_data:
     n: 15
 
 train_model:
-  types: ['Sour']
+  types: ['Stout', 'Porter', 'IPA', 'Wheat Ale', 'Pale Ale', 'Sour', 'Strong Ale', 'Pilsner', 'Dark Lager', 'Brown Ale']
   idcolname: 'Beer_ID'
 
   filter_data: 
