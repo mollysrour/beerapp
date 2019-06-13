@@ -122,9 +122,9 @@ configure_db:
     SQLITELOCALENGINE: "sqlite:///data/beers.db"
   
   rds:
-    MYSQL_USER: "root"
+    MYSQL_USER: ""
     MYSQL_PASSWORD: ""
-    MYSQL_HOST: "mysql-nw-mollysrour-beer.cwtnz4pff46i.us-east-2.rds.amazonaws.com"
-    MYSQL_PORT: '3306'
+    MYSQL_HOST: ""
+    MYSQL_PORT: ""
     MYSQL_DB: "msia423"
     MYSQL_SQLTYPE: "mysql+pymysql"

@@ -5,6 +5,7 @@ import surprise
 import pandas as pd
 
 def test_filter_data():
+    """Tests the filter_data function"""
     inputs = {
         'Beer_ID': ['BeerA', 'BeerA', 'BeerA', 'BeerA', 'BeerB'],
         'review_overall' : [1.5, 3.0, 3.0, 3.0, 4.0],
@@ -21,6 +22,7 @@ def test_filter_data():
     assert output.equals(tm.filter_data(the_input, value, col))
 
 def test_filter_data_bad():
+    """Tests the filter_data function for a bad path"""
     inputs = {
         'Beer_ID': ['BeerA', 'BeerA', 'BeerA', 'BeerA', 'BeerB'],
         'review_overall' : [1.5, 3.0, 3.0, 3.0, 4.0],
@@ -35,6 +37,7 @@ def test_filter_data_bad():
         assert True
     
 def test_get_unique_items():
+    """Tests the get_unique_items function"""
     inputs = {
         'Beer_ID': ['BeerA', 'BeerA', 'BeerA', 'BeerA', 'BeerB'],
         'review_overall' : [1.5, 3.0, 3.0, 3.0, 4.0],
@@ -52,6 +55,7 @@ def test_get_unique_items():
     assert theoutput_many.equals(tm.get_unique_items(the_input, col_many))
 
 def test_get_unique_items_bad():
+    """Tests the get_unique_items function for a bad path"""
     inputs = {
         'Beer_ID': ['BeerA', 'BeerA', 'BeerA', 'BeerA', 'BeerB'],
         'review_overall' : [1.5, 3.0, 3.0, 3.0, 4.0],
@@ -71,6 +75,7 @@ def test_get_unique_items_bad():
         assert True
 
 def test_top_n_popular():
+    """Tests the top_n_popular function"""
     inputs = {
         'Beer_ID': ['BeerA', 'BeerA', 'BeerB', 'BeerB', 'BeerC'],
         'review_overall' : [1.5, 3.0, 3.0, 3.0, 4.0],
@@ -87,6 +92,7 @@ def test_top_n_popular():
     assert output.equals(tm.top_n_popular(the_input, colnames, idcolname, reviewcolname, n))
 
 def test_top_n_popular_bad():
+    """Tests the top_n_popular function for a bad path"""
     inputs = {
         'Beer_ID': ['BeerA', 'BeerA', 'BeerB', 'BeerB', 'BeerC'],
         'review_overall' : [1.5, 3.0, 3.0, 3.0, 4.0],
@@ -103,6 +109,7 @@ def test_top_n_popular_bad():
         assert True
 
 def test_create_combinations():
+    """Tests the create_combinations function"""
     inputs = {
         'Beer_ID': ['BeerA', 'BeerA', 'BeerB'],
         'review_overall' : [1.5, 3.0, 3.0],
@@ -119,6 +126,7 @@ def test_create_combinations():
     assert output.equals(tm.create_combinations(the_input, typename, n))
 
 def test_create_combinations_bad():
+    """Tests the create_combinations function for a bad path"""
     inputs = {
         'Beer_ID': ['BeerA', 'BeerA', 'BeerB'],
         'review_overall' : [1.5, 3.0, 3.0],
@@ -133,6 +141,7 @@ def test_create_combinations_bad():
         assert True
 
 def test_create_user_rows():
+    """Tests the create_user_rows function"""
     user_choices = ['BeerA', 'BeerB']
     user_id = 'Test1'
     idlist = ['BeerA', 'BeerB', 'BeerC', 'BeerD', 'BeerE', 'BeerF']
@@ -147,6 +156,7 @@ def test_create_user_rows():
     assert output.equals(tm.create_user_rows(user_choices, user_id, idlist, reviewcolname, idcolname, usercolname))
 
 def test_create_user_rows_bad():
+    """Tests the create_user_rows function for a bad path"""
     user_choices = ['BeerG', 'BeerH']
     user_id = 'Test1'
     idlist = ['BeerA', 'BeerB', 'BeerC', 'BeerD', 'BeerE', 'BeerF']
@@ -160,6 +170,7 @@ def test_create_user_rows_bad():
         assert True
 
 def test_user_rows_combination_df():
+    """Tests the user_rows_combination_df function"""
     inputs = {'Beer_ID': ['BeerA', 'BeerA', 'BeerA', 'BeerB', 'BeerA', 'BeerB'],
         'review_overall': [1.5, 3.0, 1.5, 3.0, 3.0, 3.0],
         'Reviewer': ['ReviewerA', 'ReviewerB', 'ReviewerA', 'ReviewerC', 'ReviewerB', 'ReviewerC'],
@@ -181,6 +192,7 @@ def test_user_rows_combination_df():
     assert answers2 == tm.user_rows_combination_df(the_input, idlist, reviewcolname, idcolname, usercolname)[1]
 
 def test_build_trainset():
+    """Tests the build_trainset function"""
     inputs = {'Beer_ID': ['BeerA', 'BeerA', 'BeerA', 'BeerB', 'BeerA', 'BeerB'],
         'Mean_Review': [1.5, 3.0, 1.5, 3.0, 3.0, 3.0],
         'Reviewer': ['ReviewerA', 'ReviewerB', 'ReviewerA', 'ReviewerC', 'ReviewerB', 'ReviewerC'],
@@ -194,6 +206,7 @@ def test_build_trainset():
     assert isinstance(tm.build_trainset(the_input, user_rows, colnames), surprise.trainset.Trainset)
 
 def test_build_testset():
+    """Tests the build_testset function"""
     inputs = {'Beer_ID': ['BeerA', 'BeerA', 'BeerA', 'BeerB', 'BeerA', 'BeerB'],
         'Mean_Review': [1.5, 3.0, 1.5, 3.0, 3.0, 3.0],
         'Reviewer': ['ReviewerA', 'ReviewerB', 'ReviewerA', 'ReviewerC', 'ReviewerB', 'ReviewerC'],
@@ -210,6 +223,7 @@ def test_build_testset():
     assert answers == tm.build_testset(the_input, reviewcolname, idcolname, usercolname)
 
 def test_create_KNNmodel():
+    """Tests the create_KNNmodel function"""
     inputs = {'Beer_ID': ['BeerA', 'BeerA', 'BeerA', 'BeerB', 'BeerA', 'BeerB'],
         'Mean_Review': [1.5, 3.0, 1.5, 3.0, 3.0, 3.0],
         'Reviewer': ['ReviewerA', 'ReviewerB', 'ReviewerA', 'ReviewerC', 'ReviewerB', 'ReviewerC'],
@@ -228,6 +242,7 @@ def test_create_KNNmodel():
     assert isinstance(tm.create_KNNmodel(trainset, k, min_k, user_based, random_state), surprise.prediction_algorithms.knns.KNNBasic)
 
 def test_get_top_n():
+    """Tests the get_top_n function"""
     inputs = {'Beer_ID': ['BeerA', 'BeerA', 'BeerA', 'BeerB', 'BeerA', 'BeerB'],
         'Mean_Review': [1.5, 3.0, 1.5, 3.0, 3.0, 3.0],
         'Reviewer': ['ReviewerA', 'ReviewerB', 'ReviewerA', 'ReviewerC', 'ReviewerB', 'ReviewerC'],
@@ -258,6 +273,7 @@ def test_get_top_n():
     assert isinstance(tm.get_top_n(predictions, toplist, n), collections.defaultdict)
 
 def test_predictions():
+    """Tests the predictions function"""
     inputs = {'Beer_ID': ['BeerA', 'BeerA', 'BeerA', 'BeerB', 'BeerA', 'BeerB'],
         'Mean_Review': [1.5, 3.0, 1.5, 3.0, 3.0, 3.0],
         'Reviewer': ['ReviewerA', 'ReviewerB', 'ReviewerA', 'ReviewerC', 'ReviewerB', 'ReviewerC'],

@@ -5,6 +5,7 @@ import pandas as pd
 
 
 def test_precision_recall_at_k():
+    """Tests the precision_recall_at_k function"""
     inputs = {'Beer_ID': ['BeerA', 'BeerA', 'BeerA', 'BeerB', 'BeerA', 'BeerB'],
         'Mean_Review': [1.5, 3.0, 1.5, 3.0, 3.0, 3.0],
         'Reviewer': ['ReviewerA', 'ReviewerB', 'ReviewerA', 'ReviewerC', 'ReviewerB', 'ReviewerC'],
@@ -34,6 +35,7 @@ def test_precision_recall_at_k():
     assert len(sm.precision_recall_at_k(predictions, k, threshold)) == 2
 
 def test_data_model_forcrossvalidation():
+    """Tests the data_model_forcrossvalidation function"""
     inputs = {'Beer_ID': ['BeerA', 'BeerA', 'BeerA', 'BeerB', 'BeerA', 'BeerB'],
         'Mean_Review': [1.5, 3.0, 1.5, 3.0, 3.0, 3.0],
         'Reviewer': ['ReviewerA', 'ReviewerB', 'ReviewerA', 'ReviewerC', 'ReviewerB', 'ReviewerC'],
@@ -51,6 +53,7 @@ def test_data_model_forcrossvalidation():
     assert isinstance(sm.data_model_forcrossvalidation(the_input, config_train)[1], surprise.prediction_algorithms.knns.KNNBasic)
 
 def test_kfold_crossvalidation():
+    """Tests the kfold_crossvalidation function"""
     inputs = {'Beer_ID': ['BeerA', 'BeerA', 'BeerA', 'BeerB', 'BeerA', 'BeerB'],
         'Mean_Review': [1.5, 3.0, 1.5, 3.0, 3.0, 3.0],
         'Reviewer': ['ReviewerA', 'ReviewerB', 'ReviewerA', 'ReviewerC', 'ReviewerB', 'ReviewerC'],

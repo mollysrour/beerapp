@@ -151,12 +151,12 @@ def user_rows_combination_df(combdf, idlist, reviewcolname='Mean_Review', idcoln
     """
     thelist = []
     index = 1
-    for i in list(range(0, len(combdf.index), n)):
+    for i in list(range(0, len(combdf.index), n)): #iterating through combinations
         j=i+1
-        pair = combdf.loc[i:j,]
+        pair = combdf.loc[i:j,] #specific pair
         user_id = pair['ID'][i]
         user_rows = create_user_rows(pair[idcolname], user_id, idlist, reviewcolname, idcolname, usercolname)
-        thelist.append(user_rows)
+        thelist.append(user_rows) #created user rows
         index=index+1
     final_user_rows = pd.concat(thelist, ignore_index=True)
     user_idlist = get_unique_items(final_user_rows, usercolname)
@@ -180,10 +180,10 @@ def build_trainset(df, user_rows=None, colnames=None):
         train = df
     reader = Reader(line_format='user item rating')
     if user_rows is not None:
-        trainset_load = Dataset.load_from_df(pd.concat([train, user_rows]), reader)
+        trainset_load = Dataset.load_from_df(pd.concat([train, user_rows]), reader) #dataset plus user rows
     else:
         trainset_load = Dataset.load_from_df(train, reader)
-    trainset = trainset_load.build_full_trainset()
+    trainset = trainset_load.build_full_trainset() #build trainset
     return trainset
 
 def build_testset(df, reviewcolname='Mean_Review', idcolname='Beer_ID', usercolname='Reviewer'):
@@ -199,6 +199,7 @@ def build_testset(df, reviewcolname='Mean_Review', idcolname='Beer_ID', usercoln
         testset {list} -- list in test format that Surprise requires
     """
     testset = [(uid, iid, r) for (uid, iid, r) in zip(df[usercolname], df[idcolname], df[reviewcolname])]
+    #testset formatted in proper surprise format
     return testset
 
 def create_KNNmodel(trainset, k=50, min_k=5, user_based=True, random_state=12345):
@@ -215,6 +216,7 @@ def create_KNNmodel(trainset, k=50, min_k=5, user_based=True, random_state=12345
         model {surprise.prediction_algorithms.knns.KNNBasic} -- trained model object
     """
     model = KNNBasic(k=k, min_k=min_k, user_based=user_based, random_state=random_state)
+    #created KNNmodel
     model.fit(trainset)
 
     return model
@@ -265,12 +267,12 @@ def predictions(df, model, user_id, testset, toplist, colnames, idcolname='Beer_
     Returns:
         user_recommend {pd.DataFrame} - colname columns of the original data for the top-n item predictions for a given user
     """
-    predictions = model.test(testset)
-    top_n = get_top_n(predictions, toplist, n)
-    top_list = top_n[user_id]
-    user_score = pd.DataFrame(top_list).rename(columns={0: idcolname, 1: 'score'})
+    predictions = model.test(testset) #test model on test set
+    top_n = get_top_n(predictions, toplist, n) #get top n recommendations
+    top_list = top_n[user_id] #targeting one user
+    user_score = pd.DataFrame(top_list).rename(columns={0: idcolname, 1: 'score'}) #formatting score
     user_recommend = pd.merge(user_score, get_unique_items(df, colnames), on=idcolname, how='left')
-    return user_recommend
+    return user_recommend #final df
 
 def top_fromdata(data, i, config):
     """Gets relevant information about top most popular rows in a dataset for a specific category pandas dataframe
@@ -286,10 +288,10 @@ def top_fromdata(data, i, config):
         topdf {pd.DataFrame} -- n rows of data corresponding to top most popular items, sorted
         toplist {list} -- list of unique values of a column, specified by config, in topdf
     """
-    typedata = filter_data(data, i, **config['filter_data'])
-    itemlist = get_unique_items(typedata, **config['get_unique_items'])
-    topdf = top_n_popular(typedata, **config['top_n_popular'])
-    toplist = get_unique_items(topdf, config['idcolname'])
+    typedata = filter_data(data, i, **config['filter_data']) #filter by type
+    itemlist = get_unique_items(typedata, **config['get_unique_items']) #get unique items
+    topdf = top_n_popular(typedata, **config['top_n_popular']) #find top n popular items
+    toplist = get_unique_items(topdf, config['idcolname']) #get itemlist from top n popular
 
     return typedata, itemlist, topdf, toplist
 
@@ -297,7 +299,7 @@ def onepred_fromdata(j, user_rows, toplist, typedata, config):
     """Produces predictions for a single user
     
     Arguments:
-        j {str} -- User ID list
+        j {str} -- User ID 
         user_rows {pd.DataFrame} -- Dataframe rows for new users with ratings for chosen items 
         toplist {list} -- list of unique values of a column, specified by config, in topdf
         typedata {pd.DataFrame} -- data filtered by category value i (category column specified by config)
@@ -306,34 +308,36 @@ def onepred_fromdata(j, user_rows, toplist, typedata, config):
     Returns:
         preds {pd.DataFrame} -- colname columns of the original data for the top-n item predictions for a given user
     """
-    userdata = filter_data(user_rows, j, **config['filter_data_user'])
-    trainset = build_trainset(typedata, userdata, **config['build_trainset'])
+    userdata = filter_data(user_rows, j, **config['filter_data_user']) #filter by user
+    trainset = build_trainset(typedata, userdata, **config['build_trainset']) #build trainset
     logger.info('Trainset built.')
-    testset = build_testset(userdata, **config['build_testset'])
+    testset = build_testset(userdata, **config['build_testset']) #build testset
     logger.info('Testset built')
-    model = create_KNNmodel(trainset, **config['create_KNNmodel'])
+    model = create_KNNmodel(trainset, **config['create_KNNmodel']) #make model
     logger.info('Model built.')
-    preds = predictions(typedata, model, j, testset, toplist, **config['predictions'])
-    preds['ID'] = j
+    preds = predictions(typedata, model, j, testset, toplist, **config['predictions']) #predict for single user
+    preds['ID'] = j #add unique user id
     return preds
 
 def run_train(args):
     """Runs script to run training
     
     Arguments:
-        args {argparse.Namespace} -- Script arguments, in this case, path to config file.
+        args {argparse.Namespace} -- Script arguments
     
     Raises:
         ValueError: "Path to yaml config file must be provided through --config" if args.config not specified
         ValueError: "Path to CSV for input data must be provided through --input" if args.input not specified
-        ValueError: "Path to CSV for output data must be provided through --output" if args.output not specified
+        ValueError: "Path to CSV for output preds data must be provided through --output_preds" if args.output_preds not specified
+        ValueError: "Path to CSV for output top10 data must be provided through --output_top10rows" if args.output_top10rows not specified
+        ValueError: "Path to CSV for output combinations data must be provided through --output_combinations" if args.output_combinations not specified
     """
     if args.config is not None:
         with open(args.config, "r") as f:
 	        config = yaml.load(f)
         config = config['train_model']
     else:
-        raise ValueError("Path to config must be provided through --config")
+        raise ValueError("Path to yaml config file must be provided through --config")
     if args.input is not None:
         data = pd.read_csv(args.input)
     else:

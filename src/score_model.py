@@ -52,11 +52,11 @@ def data_model_forcrossvalidation(data, config_train):
         data {surprise.dataset.DatasetAutoFolds} -- Surprise Dataset ready for cross validation
         model {surprise.prediction_algorithms.knns.KNNBasic} -- Surprise KNNBasic Model
     """
-    t_configs = config_train['build_trainset']
-    data = data[t_configs['colnames']]
+    t_configs = config_train['build_trainset'] #configurations for trainset
+    data = data[t_configs['colnames']] #colnames configuration
     reader = Reader()
-    data = Dataset.load_from_df(data, reader)
-    model = KNNBasic(**config_train['create_KNNmodel'])
+    data = Dataset.load_from_df(data, reader) #create surprise dataset
+    model = KNNBasic(**config_train['create_KNNmodel']) #create knnmodel
     return data, model
 
 def kfold_crossvalidation(data, model, folds=5, k=5, threshold=4):
@@ -77,8 +77,8 @@ def kfold_crossvalidation(data, model, folds=5, k=5, threshold=4):
     kf = KFold(n_splits=folds)
     preclist = []
     reclist = []
-    for trainset, testset in kf.split(data):
-        model.fit(trainset)
+    for trainset, testset in kf.split(data): #cross validation splits
+        model.fit(trainset) #fit model on trainset
         predictions = model.test(testset)
         precisions, recalls = precision_recall_at_k(predictions, k=k, threshold=threshold)
         total_precision = (sum(prec for prec in precisions.values()) / len(precisions))
@@ -111,20 +111,34 @@ def create_output(data, model, outputtxt, config):
         raise ValueError("Path to textfile for outputtxt data must be provided through --outputtxt")
 
 def run_scoring(args):
+    """Runs script to run scoring
+    
+    Arguments:
+        args {argparse.Namespace} -- Script arguments
+    
+    Raises:
+        ValueError: "Path to yaml config file must be provided through --config" if args.config not specified
+        ValueError: "Path to CSV for input data must be provided through --input" if args.input not specified
+        ValueError: "Path to textfile for outputtxt data must be provided through --outputtxt" if args.outputtxt not specified
+    """
     if args.config is not None:
         with open(args.config, "r") as f:
 	        config = yaml.load(f)
         config_train = config['train_model']
         config_score = config['score_model']
     else:
-        raise ValueError("Path to CSV for input data must be provided through --input")
+        raise ValueError("Path to yaml config file must be provided through --config")
 
     if args.input is not None:
         data = pd.read_csv(args.input)
-        typedata = tm.filter_data(data, config_score['test_type'], **config_train['filter_data'])
-        finaldata, model = data_model_forcrossvalidation(typedata, config_train)
-        if args.outputtxt is not None:
-            create_output(finaldata, model, args.outputtxt, config_score)
+    else:
+        raise ValueError("Path to CSV for input data must be provided through --input")
+    typedata = tm.filter_data(data, config_score['test_type'], **config_train['filter_data'])
+    finaldata, model = data_model_forcrossvalidation(typedata, config_train)
+    if args.outputtxt is not None:
+        create_output(finaldata, model, args.outputtxt, config_score)
+    else:
+        raise ValueError("Path to textfile for outputtxt data must be provided through --outputtxt")
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG, format='%(name)s - %(levelname)s - %(asctime)s - %(message)s')

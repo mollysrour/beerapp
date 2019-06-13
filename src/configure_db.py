@@ -116,11 +116,6 @@ def persist_top10beers(session, records):
         numrec = numrec + 1 #keeps track of number of records added to db
     logger.info("Added {} records to SQL database".format(numrec))
 
-def _truncate_top10beers(session):
-    """Deletes tweet scores table if rerunning and run into unique key error."""
-
-    session.execute('''DELETE FROM top_ten_beers''')
-
 def persist_usercombinations(session, records):
     """Adds score records to tweet_score table in SQL database
     
@@ -134,12 +129,6 @@ def persist_usercombinations(session, records):
         session.add(beer) #add record
         numrec = numrec + 1 #keeps track of number of records added to db
     logger.info("Added {} records to SQL database".format(numrec))
-
-def _truncate_usercombinations(session):
-    """Deletes tweet scores table if rerunning and run into unique key error."""
-
-    session.execute('''DELETE FROM user_combinations''')
-
 
 def persist_userpredictions(session, records):
     """Adds score records to tweet_score table in SQL database
@@ -155,18 +144,25 @@ def persist_userpredictions(session, records):
         numrec = numrec + 1 #keeps track of number of records added to db
     logger.info("Added {} records to SQL database".format(numrec))
 
-def _truncate_userpredictions(session):
-    """Deletes tweet scores table if rerunning and run into unique key error."""
-
-    session.execute('''DELETE FROM user_combinations''')
 
 def configure(args):
+    """Runs script to run scoring
+    
+    Arguments:
+        args {argparse.Namespace} -- Script arguments
+    
+    Raises:
+        ValueError: "Path to yaml config file must be provided through --config" if args.config not specified
+        ValueError: "Path to CSV for input preds data must be provided through --input_preds" if args.input_preds not specified
+        ValueError: "Path to CSV for input top10 data must be provided through --input_top10rows" if args.input_top10rows not specified
+        ValueError: "Path to CSV for input combinations data must be provided through --input_combinations" if args.input_combinations not specified
+    """
     if args.config is not None:
         with open(args.config, "r") as f:
 	        config = yaml.load(f)
         config = config['configure_db']
     else:
-        raise ValueError("Path to CSV for input data must be provided through --input")
+        raise ValueError("Path to yaml config file must be provided through --config")
     if args.rds:
         engine = create_db(rds=True, **config['rds'])
     else:
@@ -175,15 +171,12 @@ def configure(args):
 
     if args.input_preds is not None:
         pred_data = pd.read_csv(args.input_preds)
+    else:
+        raise ValueError("Path to CSV for input preds must be provided through --input_preds")
         pred_data = pred_data.fillna(value=0)
         try:
             persist_userpredictions(session, pred_data)
             session.commit()
-        except sqlite3.IntegrityError as e:
-            logger.error("The database already contains the records you are trying to insert. "
-                     "Please truncate the table before attempting again.")
-            logger.error(e)
-            sys.exit(1)
         except Exception as e:
             logger.error(e)
             sys.exit(1)
@@ -192,16 +185,13 @@ def configure(args):
     
     if args.input_top10rows is not None:
         top10_data = pd.read_csv(args.input_top10rows)
+    else:
+        raise ValueError("Path to CSV for input top10 data must be provided through --input_top10rows")
         top10_data = top10_data.fillna(value=0)
         print(top10_data)
         try:
             persist_top10beers(session, top10_data)
             session.commit()
-        except sqlite3.IntegrityError as e:
-            logger.error("The database already contains the records you are trying to insert. "
-                     "Please truncate the table before attempting again.")
-            logger.error(e)
-            sys.exit(1)
         except Exception as e:
             logger.error(e)
             sys.exit(1)
@@ -210,15 +200,12 @@ def configure(args):
     
     if args.input_combinations is not None:
         combinations_data = pd.read_csv(args.input_combinations)
+    else:
+        raise ValueError("Path to CSV for input combination data must be provided through --input_combinations")
         combinations_data = combinations_data.fillna(value=0)
         try:
             persist_usercombinations(session, combinations_data)
             session.commit()
-        except sqlite3.IntegrityError as e:
-            logger.error("The database already contains the records you are trying to insert. "
-                     "Please truncate the table before attempting again.")
-            logger.error(e)
-            sys.exit(1)
         except Exception as e:
             logger.error(e)
             sys.exit(1)

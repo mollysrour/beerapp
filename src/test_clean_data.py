@@ -3,6 +3,7 @@ import pandas as pd
 import pytest
 
 def test_create_mean_column():
+    """Test the create_mean_column function"""
     inputs = {
         'brewery_id': [10325, 10325, 10325, 10325, 1075],
         'review_overall' : [1.5, 3.0, 3.0, 3.0, 4.0],
@@ -20,6 +21,7 @@ def test_create_mean_column():
     assert output.equals(cd.create_mean_column(the_input, columns, name))
 
 def test_create_mean_column_bad():
+    """Test the create_mean_column function for a bad path"""
     inputs = {
         'brewery_id': [10325, 10325, 10325, 10325, 1075],
         'review_overall' : [1.5, 3.0, 3.0, 3.0, 4.0],
@@ -34,6 +36,7 @@ def test_create_mean_column_bad():
         assert True
 
 def test_omit_values():
+    """Tests the omit_values function"""
     inputs = {
         'brewery_id': [10325, 10325, 10325, 10325, 1075],
         'review_overall' : [1.5, 3.0, 3.0, 3.0, 4.0],
@@ -53,6 +56,7 @@ def test_omit_values():
     assert output.equals(cd.omit_values(the_input, column, valuelist))
 
 def test_omit_values_bad():
+    """Tests the omit_values function for a bad path"""
     inputs = {
         'brewery_id': [10325, 10325, 10325, 10325, 1075],
         'review_overall' : [1.5, 3.0, 3.0, 3.0, 4.0],
@@ -68,6 +72,7 @@ def test_omit_values_bad():
         assert True
 
 def test_aggregated_category_column():
+    """Tests the aggregated_category_column function"""
     inputs = {
         'brewery_id': [10325, 10325, 10325, 10325, 1075],
         'review_overall' : [1.5, 3.0, 3.0, 3.0, 4.0],
@@ -88,6 +93,7 @@ def test_aggregated_category_column():
     assert output.equals(cd.aggregated_category_column(the_input, narrowcolumn, valuedict, broadcategory))
 
 def test_aggregated_category_column():
+    """Tests the aggregated_category_column function for a bad path"""
     inputs = {
         'brewery_id': [10325, 10325, 10325, 10325, 1075],
         'review_overall' : [1.5, 3.0, 3.0, 3.0, 4.0],
@@ -104,6 +110,7 @@ def test_aggregated_category_column():
         assert True
     
 def test_select_rename_features():
+    """Tests the select_rename_features function"""
     inputs = {
         'brewery_id': [10325, 10325, 10325, 10325, 1075],
         'review_overall' : [1.5, 3.0, 3.0, 3.0, 4.0],
@@ -122,6 +129,7 @@ def test_select_rename_features():
     assert output.equals(cd.select_rename_features(the_input, oldnames, newnames))
 
 def test_select_rename_features_bad():
+    """Tests the select_rename_features function for a bad path"""
     inputs = {
         'brewery_id': [10325, 10325, 10325, 10325, 1075],
         'review_overall' : [1.5, 3.0, 3.0, 3.0, 4.0],
@@ -137,6 +145,7 @@ def test_select_rename_features_bad():
         assert True
 
 def test_refine_data():
+    """Tests the refine_data function"""
     inputs = {
         'Beer_ID': ['BeerA', 'BeerA', 'BeerA', 'BeerA', 'BeerB'],
         'review_overall' : [1.5, 3.0, 3.0, 3.0, 4.0],
@@ -155,6 +164,7 @@ def test_refine_data():
     assert output.equals(cd.refine_data(the_input, idcolname, usercolname, n))
 
 def test_refine_data_bad():
+    """Tests the refine_data function for a bad path"""
     inputs = {
         'Beer_ID': ['BeerA', 'BeerA', 'BeerA', 'BeerA', 'BeerB'],
         'review_overall' : [1.5, 3.0, 3.0, 3.0, 4.0],
