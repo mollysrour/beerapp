@@ -10,14 +10,15 @@
     + [With `conda`](#with-conda)
   * [2. Configure AWS Credentials for S3 and RDS](#2-configure-aws-credentials-for-s3-and-rds)
   * [3. Data Pipeline](#3-data-pipeline)
-  * [4. Launch App](#3-launch-app)
+  * [4. Launch App](#4-launch-app)
+  * [5. Run Unit Tests](#5-run-unit-tests)
   
 
 <!-- tocstop -->
 
 ## Project Charter 
 
-**Vision**: To enable beer-novices and craft beer enthusiasts alike to discover new beers that fit their interests. The craft beer industry has been exploding over the last 10 years, and it could be considered daunting to try to navigate the huge variety in beer styles to find one that is appealing. Users will explore new beers and gain a greater appreciation of the options of beer available.  After visiting this app, users will be more likely to buy more beer and frequent a wider range of breweries.  B
+**Vision**: To enable beer-novices and craft beer enthusiasts alike to discover new beers that fit their interests. The craft beer industry has been exploding over the last 10 years, and it could be considered daunting to try to navigate the huge variety in beer styles to find one that is appealing. Users will explore new beers and gain a greater appreciation of the options of beer available.  After visiting this app, users will be more likely to buy more beer and frequent a wider range of breweries.  
 
 **Mission**: The app will be easy to navigate and will allow users to explore 10 diverse categories of beer and give targeted recommendations of specific beers in each category.  Users will choose a category, name beers they find appealing, and be compared to a database of over 1.5 million total reviews of beer to find their perfect brew. 
 
