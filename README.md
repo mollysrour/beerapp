@@ -178,3 +178,5 @@ Run `python application.py`
 ### 5. Run Unit tests
 
 Run `py.test` to unit test this app. The test scripts are found in the src folder.
+
+Functions that merely compiled other unit tested functions were not tested.
