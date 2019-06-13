@@ -10,14 +10,15 @@
     + [With `conda`](#with-conda)
   * [2. Configure AWS Credentials for S3 and RDS](#2-configure-aws-credentials-for-s3-and-rds)
   * [3. Data Pipeline](#3-data-pipeline)
-  * [4. Launch App](#3-launch-app)
+  * [4. Launch App](#4-launch-app)
+  * [5. Run Unit Tests](#5-run-unit-tests)
   
 
 <!-- tocstop -->
 
 ## Project Charter 
 
-**Vision**: To enable beer-novices and craft beer enthusiasts alike to discover new beers that fit their interests. The craft beer industry has been exploding over the last 10 years, and it could be considered daunting to try to navigate the huge variety in beer styles to find one that is appealing. Users will explore new beers and gain a greater appreciation of the options of beer available.  After visiting this app, users will be more likely to buy more beer and frequent a wider range of breweries.  B
+**Vision**: To enable beer-novices and craft beer enthusiasts alike to discover new beers that fit their interests. The craft beer industry has been exploding over the last 10 years, and it could be considered daunting to try to navigate the huge variety in beer styles to find one that is appealing. Users will explore new beers and gain a greater appreciation of the options of beer available.  After visiting this app, users will be more likely to buy more beer and frequent a wider range of breweries.  
 
 **Mission**: The app will be easy to navigate and will allow users to explore 10 diverse categories of beer and give targeted recommendations of specific beers in each category.  Users will choose a category, name beers they find appealing, and be compared to a database of over 1.5 million total reviews of beer to find their perfect brew. 
 
@@ -166,8 +167,16 @@ Go into the makefile and change the data paths appropriately to where you would 
    
 Run  `make all`
 
+Make all runs the acquire_data, clean_data, train_model, score_model, AND configure_db scripts.  Only run this command once, because if you run it multiple times, it will duplicate the rows in the database. Make sure all your sqlite/rds configurations are properly exported and entered in the YAML before running this command.
+
 ### 4. Launch App
 
 `flask_config.py` holds the configurations for the Flask app. If you are configuring the app locally, you must change the SQLALCHEMY_DATABASE_URI to the same path that you specified in SQLITELOCALENGINE in the config for your database. If you are configuring the app using RDS, you should not need to change anything in flask_config.py since the os environment variables are used.  HOWEVER, if your database is not called msia423 and your connection type is not mysql+pymysql, you must change those to their appropriate settings within flask_config.py.
 
 Run `python application.py`
+
+### 5. Run Unit tests
+
+Run `py.test` to unit test this app. The test scripts are found in the src folder.
+
+Functions that merely compiled other unit tested functions were not tested.
