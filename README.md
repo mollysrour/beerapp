@@ -1,4 +1,6 @@
 # Gulp! The Beer Recommendation App
+By Molly Srour
+Lead QA Tova Simonson
 
 <!-- toc -->
 
