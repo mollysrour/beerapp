@@ -72,6 +72,23 @@ python get-pip.py
 ```
 #### Once pip is installed:
 
+Clone this repo:
+
+```bash
+
+git clone https://github.com/mollysrour/beerapp/
+
+```
+Then enter the local folder
+
+```bash
+
+cd beerapp
+
+```
+
+### Running the application:
+
 ### 1. Set up environment 
 
 The `requirements.txt` file contains the packages required to run the model code. An environment can be set up in two ways. 
