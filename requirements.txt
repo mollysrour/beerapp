@@ -8,3 +8,4 @@ pymysql==0.9.3
 pandas==0.24.2
 boto3==1.9.148
 argparse==1.4.0
+surprise==0.1
